@@ -1,4 +1,4 @@
-package cz.cvut.fel.x36tjv.ondrepe1.centralbank.po;
+package cz.cvut.fel.x36tjv.ondrepe1.centralbank.db.po;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -22,23 +22,23 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "transfer")
 @NamedQueries({
-    @NamedQuery(name = "Transfer.findAll", query = "SELECT t FROM Transfer t"),
-    @NamedQuery(name = "Transfer.findById", query = "SELECT t FROM Transfer t WHERE t.id = :id"),
-    @NamedQuery(name = "Transfer.findByBankFrom", query = "SELECT t FROM Transfer t WHERE t.bankFrom = :bankFrom"),
-    @NamedQuery(name = "Transfer.findByAccountFrom", query = "SELECT t FROM Transfer t WHERE t.accountFrom = :accountFrom"),
-    @NamedQuery(name = "Transfer.findByBankTo", query = "SELECT t FROM Transfer t WHERE t.bankTo = :bankTo"),
-    @NamedQuery(name = "Transfer.findByAccountTo", query = "SELECT t FROM Transfer t WHERE t.accountTo = :accountTo"),
-    @NamedQuery(name = "Transfer.findByAmount", query = "SELECT t FROM Transfer t WHERE t.amount = :amount"),
-    @NamedQuery(name = "Transfer.findByCurrency", query = "SELECT t FROM Transfer t WHERE t.currency = :currency"),
-    @NamedQuery(name = "Transfer.findByDescription", query = "SELECT t FROM Transfer t WHERE t.description = :description"),
-    @NamedQuery(name = "Transfer.findByDateTime", query = "SELECT t FROM Transfer t WHERE t.dateTime = :dateTime")})
-public class Transfer implements Serializable {
+    @NamedQuery(name = "TransferPO.findAll", query = "SELECT t FROM TransferPO t"),
+    @NamedQuery(name = "TransferPO.findById", query = "SELECT t FROM TransferPO t WHERE t.idTransfer = :idTransfer"),
+    @NamedQuery(name = "TransferPO.findByBankFrom", query = "SELECT t FROM TransferPO t WHERE t.bankFrom = :bankFrom"),
+    @NamedQuery(name = "TransferPO.findByAccountFrom", query = "SELECT t FROM TransferPO t WHERE t.accountFrom = :accountFrom"),
+    @NamedQuery(name = "TransferPO.findByBankTo", query = "SELECT t FROM TransferPO t WHERE t.bankTo = :bankTo"),
+    @NamedQuery(name = "TransferPO.findByAccountTo", query = "SELECT t FROM TransferPO t WHERE t.accountTo = :accountTo"),
+    @NamedQuery(name = "TransferPO.findByAmount", query = "SELECT t FROM TransferPO t WHERE t.amount = :amount"),
+    @NamedQuery(name = "TransferPO.findByCurrency", query = "SELECT t FROM TransferPO t WHERE t.currency = :currency"),
+    @NamedQuery(name = "TransferPO.findByDescription", query = "SELECT t FROM TransferPO t WHERE t.description = :description"),
+    @NamedQuery(name = "TransferPO.findByDateTime", query = "SELECT t FROM TransferPO t WHERE t.transferTime = :transferTime")})
+public class TransferPO implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id")
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    @Column(name = "idTransfer")
+    //@GeneratedValue(strategy=GenerationType.AUTO)
+    private Long idTransfer;
     @Basic(optional = false)
     @Column(name = "bankFrom")
     private int bankFrom;
@@ -61,19 +61,19 @@ public class Transfer implements Serializable {
     @Column(name = "description")
     private String description;
     @Basic(optional = false)
-    @Column(name = "dateTime")
+    @Column(name = "transferTime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateTime;
+    private Date transferTime;
 
-    public Transfer() {
+    public TransferPO() {
     }
 
-    public Transfer(Integer id) {
-        this.id = id;
+    public TransferPO(Long id) {
+        this.idTransfer = id;
     }
 
-    public Transfer(Integer id, int bankFrom, String accountFrom, int bankTo, String accountTo, BigDecimal amount, String currency, String description, Date dateTime) {
-        this.id = id;
+    public TransferPO(Long id, int bankFrom, String accountFrom, int bankTo, String accountTo, BigDecimal amount, String currency, String description, Date dateTime) {
+        this.idTransfer = id;
         this.bankFrom = bankFrom;
         this.accountFrom = accountFrom;
         this.bankTo = bankTo;
@@ -81,15 +81,15 @@ public class Transfer implements Serializable {
         this.amount = amount;
         this.currency = currency;
         this.description = description;
-        this.dateTime = dateTime;
+        this.transferTime = dateTime;
     }
 
-    public Integer getId() {
-        return id;
+    public Long getIdTransfer() {
+        return idTransfer;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdTransfer(Long idTransfer) {
+        this.idTransfer = idTransfer;
     }
 
     public int getBankFrom() {
@@ -148,29 +148,29 @@ public class Transfer implements Serializable {
         this.description = description;
     }
 
-    public Date getDateTime() {
-        return dateTime;
+    public Date getTransferTime() {
+        return transferTime;
     }
 
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+    public void setTransferTime(Date transferTime) {
+        this.transferTime = transferTime;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idTransfer != null ? idTransfer.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Transfer)) {
+        if (!(object instanceof TransferPO)) {
             return false;
         }
-        Transfer other = (Transfer) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        TransferPO other = (TransferPO) object;
+        if ((this.idTransfer == null && other.idTransfer != null) || (this.idTransfer != null && !this.idTransfer.equals(other.idTransfer))) {
             return false;
         }
         return true;
@@ -178,7 +178,7 @@ public class Transfer implements Serializable {
 
     @Override
     public String toString() {
-        return "cz.cvut.fel.x36tjv.ondrepe1.centralbank.po.Transfer[id=" + id + "]";
+        return "cz.cvut.fel.x36tjv.ondrepe1.centralbank.po.Transfer[id=" + idTransfer + "]";
     }
 
 }

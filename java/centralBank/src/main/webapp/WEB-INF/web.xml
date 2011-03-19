@@ -23,8 +23,10 @@
     </servlet-mapping>
 
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
+
+    <persistence-unit-ref>
+        <persistence-unit-ref-name>persistence/cbPU</persistence-unit-ref-name>
+    </persistence-unit-ref>
 </web-app>
