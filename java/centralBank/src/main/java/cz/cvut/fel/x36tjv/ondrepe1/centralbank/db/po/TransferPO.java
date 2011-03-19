@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
  * @author ondrepe
  */
 @Entity
-@Table(name = "transfer")
+@Table(name = "Transfer")
 @NamedQueries({
     @NamedQuery(name = "TransferPO.findAll", query = "SELECT t FROM TransferPO t"),
     @NamedQuery(name = "TransferPO.findById", query = "SELECT t FROM TransferPO t WHERE t.idTransfer = :idTransfer"),
@@ -38,7 +38,7 @@ public class TransferPO implements Serializable {
     @Basic(optional = false)
     @Column(name = "idTransfer")
     //@GeneratedValue(strategy=GenerationType.AUTO)
-    private Long idTransfer;
+    private Integer idTransfer;
     @Basic(optional = false)
     @Column(name = "bankFrom")
     private int bankFrom;
@@ -68,11 +68,11 @@ public class TransferPO implements Serializable {
     public TransferPO() {
     }
 
-    public TransferPO(Long id) {
+    public TransferPO(Integer id) {
         this.idTransfer = id;
     }
 
-    public TransferPO(Long id, int bankFrom, String accountFrom, int bankTo, String accountTo, BigDecimal amount, String currency, String description, Date dateTime) {
+    public TransferPO(Integer id, int bankFrom, String accountFrom, int bankTo, String accountTo, BigDecimal amount, String currency, String description, Date dateTime) {
         this.idTransfer = id;
         this.bankFrom = bankFrom;
         this.accountFrom = accountFrom;
@@ -84,11 +84,11 @@ public class TransferPO implements Serializable {
         this.transferTime = dateTime;
     }
 
-    public Long getIdTransfer() {
+    public Integer getIdTransfer() {
         return idTransfer;
     }
 
-    public void setIdTransfer(Long idTransfer) {
+    public void setIdTransfer(Integer idTransfer) {
         this.idTransfer = idTransfer;
     }
 

@@ -26,7 +26,7 @@ public class TransferDao {
             Random rnd = new Random();
 
             TransferPO transfer = new TransferPO();
-            transfer.setIdTransfer(rnd.nextLong());
+            transfer.setIdTransfer(rnd.nextInt());
             transfer.setBankFrom(request.getBankFrom());
             transfer.setAccountFrom(request.getAccountFrom());
             transfer.setBankTo(request.getBankTo());
