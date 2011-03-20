@@ -37,7 +37,7 @@ public class TransferPO implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "idTransfer")
-    //@GeneratedValue(strategy=GenerationType.AUTO)
+    //@GeneratedValue(strategy=GenerationType.AUTO, generator="")
     private Integer idTransfer;
     @Basic(optional = false)
     @Column(name = "bankFrom")
