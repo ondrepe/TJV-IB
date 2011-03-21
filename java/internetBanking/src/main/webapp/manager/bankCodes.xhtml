@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./managerTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="content">
+        <h:dataTable var="bank" value="#{bankCodes.banks}">
+            <h:column>
+                <f:facet name="header">code</f:facet>
+                #{bank.code}
+            </h:column>
+            <h:column>
+                <f:facet name="header">name</f:facet>
+                #{bank.name}
+            </h:column>
+        </h:dataTable>
+
+        <h:form>
+            <h:panelGrid columns="3">
+                Code: <h:inputText id="code" value="#{bankCode.code}" />
+                <h:message for="code" />
+                Name: <h:inputText id="name" value="#{bankCode.name}" />
+                <h:message for="name" />
+                <h:commandButton value="add" action="#{bankCode.add}" />
+            </h:panelGrid>
+        </h:form>
+
+        <h:form>
+            <h:selectOneListbox id="name" value="#{bankCodes.names}" />
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -20,7 +20,10 @@
         <div>
             <div id="left">
                 <ui:insert name="left">
-                    <h:commandLink target="AllCustomers.xhtml">View All Customers</h:commandLink>
+                    <li>
+                        <ul><h:link outcome="bankCodes.xhtml">View &amp; Update Bank Codes</h:link></ul>
+                        <ul><h:link outcome="../index.xhtml">Back</h:link></ul>
+                    </li>
                 </ui:insert>
             </div>
             <div id="content" class="left_content">
