@@ -1,8 +1,9 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.managed;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.inject.Named;
 
 /**
  *
@@ -10,25 +11,24 @@ import javax.inject.Named;
  */
 @ManagedBean
 @RequestScoped
-//@Named(value="bankCode")
 public class BankCode {
 
-    private int code;
+    private Integer code;
     private String name;
 
     public BankCode() {
     }
 
-    public BankCode(int code, String name) {
+    public BankCode(Integer code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
@@ -44,5 +44,30 @@ public class BankCode {
         System.out.println("name:" + name);
         System.out.println("code: "+ code);
         return null;
+    }
+
+    public String delete() {
+        System.out.println("name:" + name);
+        return null;
+    }
+
+    public List<BankCode> getBanks() {
+        ArrayList<BankCode> codes = new ArrayList<BankCode>();
+        codes.add(new BankCode(123, "Komercka"));
+        codes.add(new BankCode(456, "AirBank"));
+        codes.add(new BankCode(789, "Raiffaisen"));
+        return codes;
+    }
+
+    public List<String> getNames() {
+        ArrayList<String> codes = new ArrayList<String>();
+        codes.add("Komercka");
+        codes.add("AirBank");
+        codes.add("Raiffaisen");
+        return codes;
+    }
+
+    public boolean validateCode() {
+        return false;
     }
 }

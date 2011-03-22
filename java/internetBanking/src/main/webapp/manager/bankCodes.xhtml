@@ -6,7 +6,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="content">
-        <h:dataTable var="bank" value="#{bankCodes.banks}">
+        <h:dataTable var="bank" value="#{bankCode.banks}">
             <h:column>
                 <f:facet name="header">code</f:facet>
                 #{bank.code}
@@ -19,7 +19,10 @@
 
         <h:form>
             <h:panelGrid columns="3">
-                Code: <h:inputText id="code" value="#{bankCode.code}" />
+                Code:
+                <h:inputText id="code" value="#{bankCode.code}" required="true" requiredMessage="Code is required." validatorMessage="Code must be a number between 100 and 999." immediate="true">
+                    <f:validateLongRange minimum="100" maximum="999" id="code_long_range" />
+                </h:inputText>
                 <h:message for="code" />
                 Name: <h:inputText id="name" value="#{bankCode.name}" />
                 <h:message for="name" />
@@ -28,7 +31,13 @@
         </h:form>
 
         <h:form>
-            <h:selectOneListbox id="name" value="#{bankCodes.names}" />
+            <h:panelGrid columns="2">
+                <h:selectOneMenu value="#{bankCode.name}">
+                    <f:selectItems var="name" value="#{bankCode.names}" />
+                    #{name}
+                </h:selectOneMenu>
+                <h:commandButton value="delete" action="#{bankCode.delete}" />
+            </h:panelGrid>
         </h:form>
     </ui:define>
 
