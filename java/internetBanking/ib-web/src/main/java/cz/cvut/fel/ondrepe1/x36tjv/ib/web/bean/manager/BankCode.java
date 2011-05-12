@@ -1,4 +1,4 @@
-package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.managed;
+package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.manager;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,14 +6,18 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="content">
-        <h:dataTable var="bank" value="#{bankCode.banks}">
+        <h:dataTable var="currency" value="#{currencyCode.codes}">
             <h:column>
                 <f:facet name="header">code</f:facet>
-                #{bank.code}
+                #{currency.code}
             </h:column>
             <h:column>
                 <f:facet name="header">name</f:facet>
-                #{bank.name}
+                #{currency.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">decimal digits</f:facet>
+                #{currency.decimalDigits}
             </h:column>
         </h:dataTable>
 

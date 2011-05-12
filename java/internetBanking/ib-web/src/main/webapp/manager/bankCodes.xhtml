@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./managerTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:define name="content">
+    <h:dataTable var="bank" value="#{bankList.list}">
+      <h:column>
+        <f:facet name="header">code</f:facet>
+        #{bank.code}
+      </h:column>
+      <h:column>
+        <f:facet name="header">name</f:facet>
+        #{bank.name}
+      </h:column>
+    </h:dataTable>
+
+    <!--  
+    <h:form>
+          <h:panelGrid columns="3">
+              Code:
+              <h:inputText id="code" value="{bankCode.code}" required="true" requiredMessage="Code is required." validatorMessage="Code must be a number between 100 and 999." immediate="true">
+                  <f:validateLongRange minimum="100" maximum="999" id="code_long_range" />
+              </h:inputText>
+              <h:message for="code" />
+              Name: <h:inputText id="name" value="{bankCode.name}" />
+              <h:message for="name" />
+              <h:commandButton value="add" action="{bankCode.add}" />
+          </h:panelGrid>
+      </h:form> -->
+
+    <h:form>
+      <h:panelGrid columns="2">
+        <h:selectOneMenu value="#{bankList.selectedItem}">
+          <f:selectItems itemLabel="#{bank.name}" itemValue="#{bank.code}" var="bank" value="#{bankList.list}" />
+        </h:selectOneMenu>
+        <h:commandButton value="delete" action="#{bankList.delete}" />
+      </h:panelGrid>
+    </h:form>
+  </ui:define>
+
+</ui:composition>
