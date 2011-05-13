@@ -7,14 +7,15 @@ import java.util.List;
  *
  * @author ondrepe
  */
-public abstract class ListAndDeleteBean <T extends AbstractIFaceObject> {
+public abstract class DLBean <T extends AbstractIFaceObject> implements IListBean<T>, IDeleteBean {
   
   private String selectedItem;
   private List<T> list;
   
   protected abstract List<T> load();
-  public abstract void delete();
+  protected abstract void deleteItem();
   
+  @Override
   public final List<T> getList() {
     if(this.list == null) {
       this.list = load();
@@ -26,8 +27,18 @@ public abstract class ListAndDeleteBean <T extends AbstractIFaceObject> {
     this.selectedItem = selectedItem;
   }
 
-  public Object getSelectedItem() {
+  public String getSelectedItem() {
     return selectedItem;
+  }
+  
+  public final void reload() {
+    this.list = load();
+  }
+  
+  @Override
+  public final void delete() {
+    deleteItem();
+    reload();
   }
   
 }
