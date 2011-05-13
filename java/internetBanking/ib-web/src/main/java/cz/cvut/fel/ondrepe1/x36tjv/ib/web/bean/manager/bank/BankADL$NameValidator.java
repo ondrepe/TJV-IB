@@ -1,7 +1,5 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.manager.bank;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IBankCodeBean;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -18,12 +16,8 @@ import javax.faces.validator.ValidatorException;
 @RequestScoped
 public class BankADL$NameValidator implements Validator {
 
-  private static final String MANDATORY = "Jméno je povinné!";
-  private static final String ONLY_SPACES = "Jméno musí obsahovat viditelné znaky!";
-  private static final String USED = "Jméno je použito!";
-
-  @EJB
-  private IBankCodeBean bankBean;
+  private static final String MANDATORY = "Name is mandatory!";
+  private static final String ONLY_SPACES = "Name must be non-empty string!";
   
   @Override
   public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
@@ -31,15 +25,8 @@ public class BankADL$NameValidator implements Validator {
       throw new ValidatorException(new FacesMessage(MANDATORY));
     }
     String stringValue = (String) value;
-    if (stringValue.trim().isEmpty()) {
+    if (stringValue.trim().isEmpty() || stringValue.trim().length() > 250) {
       throw new ValidatorException(new FacesMessage(ONLY_SPACES));
     }
-    if(exist(stringValue)) {
-      throw new ValidatorException(new FacesMessage(USED));
-    }
-  }
-  
-  private boolean exist(String name) {
-    return bankBean.existBankName(name);
   }
 }

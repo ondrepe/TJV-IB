@@ -1,8 +1,11 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.currencyrate.CurrencyRateSetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrencyRatePO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrentCurrencyRatePO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICurrencyRateBean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CurrencyRate;
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,7 +37,7 @@ public class CurrencyRateBean implements ICurrencyRateBean {
 
   @Override
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void delete(String string) {
+  public void delete(String string) throws CommonIBException {
     CurrentCurrencyRatePO ccRate = em.find(CurrentCurrencyRatePO.class, string);
     CurrencyRatePO cRate = em.find(CurrencyRatePO.class, string);
     em.remove(ccRate);
@@ -43,19 +46,9 @@ public class CurrencyRateBean implements ICurrencyRateBean {
 
   @Override
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void set(CurrencyRate cr) {
-    CurrentCurrencyRatePO ccRate = em.find(CurrentCurrencyRatePO.class, cr.getCode());
-    CurrencyRatePO cRate;
-    String code = cr.getCode().trim().toUpperCase();
-    BigDecimal rate = new BigDecimal(cr.getRate());
-    if(ccRate == null) {
-      ccRate = new CurrentCurrencyRatePO(code, rate);
-      cRate = new CurrencyRatePO(code, rate);
-      em.persist(cRate);
-    } else {
-      ccRate.setRate(rate);
-    }
-    em.persist(ccRate);
+  public void set(CurrencyRate cr) throws CommonIBException {
+    CommonSetCommand command = new CurrencyRateSetCommand(em);
+    command.set(cr);
   }
   
 }

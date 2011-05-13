@@ -2,6 +2,7 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.manager.currencyrate;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICurrencyCodeBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICurrencyRateBean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CurrencyCode;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CurrencyRate;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.ADLBean;
@@ -24,7 +25,7 @@ public class CurrencyRateADL extends ADLBean<CurrencyRate> {
   private ICurrencyCodeBean codeBean;
   
   @Override
-  protected void addItem(CurrencyRate item) {
+  protected void addItem(CurrencyRate item) throws CommonIBException {
     rateBean.set(item);
   }
 
@@ -39,7 +40,7 @@ public class CurrencyRateADL extends ADLBean<CurrencyRate> {
   }
 
   @Override
-  protected void deleteItem() {
+  protected void deleteItem() throws CommonIBException {
     rateBean.delete(getSelectedItem());
   }
   

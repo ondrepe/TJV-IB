@@ -1,5 +1,6 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common;
 
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.AbstractIFaceObject;
 
 /**
@@ -10,13 +11,17 @@ public abstract class ADLBean<T extends AbstractIFaceObject> extends DLBean<T> i
   
   private T item;
   
-  protected abstract void addItem(T item);
+  protected abstract void addItem(T item) throws CommonIBException;
   protected abstract T initItem();
   
   @Override
   public final void add() {
-    addItem(item);
-    reload();
+    try {
+     addItem(item);
+     reload();
+    } catch(CommonIBException ex) {
+    
+    }
   }
 
   public void setItem(T item) {

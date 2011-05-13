@@ -1,5 +1,6 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common;
 
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.AbstractIFaceObject;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public abstract class DLBean <T extends AbstractIFaceObject> implements IListBea
   private List<T> list;
   
   protected abstract List<T> load();
-  protected abstract void deleteItem();
+  protected abstract void deleteItem() throws CommonIBException;
   
   @Override
   public final List<T> getList() {
@@ -37,8 +38,12 @@ public abstract class DLBean <T extends AbstractIFaceObject> implements IListBea
   
   @Override
   public final void delete() {
-    deleteItem();
-    reload();
+    try {
+     deleteItem();
+     reload();
+    } catch(CommonIBException ex) {
+    
+    }
   }
   
 }

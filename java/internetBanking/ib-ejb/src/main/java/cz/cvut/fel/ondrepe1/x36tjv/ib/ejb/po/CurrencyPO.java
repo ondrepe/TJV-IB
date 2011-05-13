@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
   @NamedQuery(name = "CurrencyPO.findAll", query = "SELECT c FROM CurrencyPO c"),
   @NamedQuery(name = "CurrencyPO.findByCode", query = "SELECT c FROM CurrencyPO c WHERE c.code = :code"),
+  @NamedQuery(name = "CurrencyPO.findByCodeAndNameAndDD", query = "SELECT c FROM CurrencyPO c WHERE c.code = :code AND c.name = :name AND c.decimalDigits = :decimalDigits"),
   @NamedQuery(name = "CurrencyPO.findByName", query = "SELECT c FROM CurrencyPO c WHERE c.name = :name"),
   @NamedQuery(name = "CurrencyPO.findByDecimalDigits", query = "SELECT c FROM CurrencyPO c WHERE c.decimalDigits = :decimalDigits")})
 public class CurrencyPO implements Serializable {

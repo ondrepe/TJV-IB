@@ -22,9 +22,11 @@ import javax.validation.constraints.Size;
 @Table(name = "customer")
 @NamedQueries({
   @NamedQuery(name = "CustomerPO.findAll", query = "SELECT c FROM CustomerPO c"),
+  @NamedQuery(name = "CustomerPO.findByValid", query = "SELECT c FROM CustomerPO c WHERE c.valid = :valid"),
   @NamedQuery(name = "CustomerPO.findById", query = "SELECT c FROM CustomerPO c WHERE c.id = :id"),
+  @NamedQuery(name = "CustomerPO.findByAll", query = "SELECT c FROM CustomerPO c WHERE c.firstName = :firstName AND c.lastName = :lastName AND c.email = :email"),
   @NamedQuery(name = "CustomerPO.findByFirstName", query = "SELECT c FROM CustomerPO c WHERE c.firstName = :firstName"),
-  @NamedQuery(name = "CustomerPO.findByCustomercol", query = "SELECT c FROM CustomerPO c WHERE c.customercol = :customercol"),
+  @NamedQuery(name = "CustomerPO.findByLastName", query = "SELECT c FROM CustomerPO c WHERE c.lastName = :lastName"),
   @NamedQuery(name = "CustomerPO.findByEmail", query = "SELECT c FROM CustomerPO c WHERE c.email = :email")})
 public class CustomerPO implements Serializable {
   @Basic(optional = false)
@@ -52,12 +54,6 @@ public class CustomerPO implements Serializable {
   private String firstName;
   @Basic(optional = false)
   @NotNull
-  @Size(min = 1, max = 250)
-  @Column(name = "Customercol")
-  private String customercol;
-  // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-  @Basic(optional = false)
-  @NotNull
   @Size(min = 1, max = 500)
   @Column(name = "email")
   private String email;
@@ -69,10 +65,10 @@ public class CustomerPO implements Serializable {
     this.id = id;
   }
 
-  public CustomerPO(Integer id, String firstName, String customercol, String email) {
+  public CustomerPO(Integer id, String firstName, String lastName, String email) {
     this.id = id;
     this.firstName = firstName;
-    this.customercol = customercol;
+    this.lastName = lastName;
     this.email = email;
   }
 
@@ -90,14 +86,6 @@ public class CustomerPO implements Serializable {
 
   public void setFirstName(String firstName) {
     this.firstName = firstName;
-  }
-
-  public String getCustomercol() {
-    return customercol;
-  }
-
-  public void setCustomercol(String customercol) {
-    this.customercol = customercol;
   }
 
   public String getEmail() {

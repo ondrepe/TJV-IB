@@ -1,4 +1,4 @@
-package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.manager.bank;
+package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.manager.customer;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -14,19 +14,20 @@ import javax.faces.validator.ValidatorException;
  */
 @ManagedBean
 @RequestScoped
-public class BankADL$CodeValidator implements Validator {
+public class Customer$LastNameValidator implements Validator {
 
-  private static final String MANDATORY = "Code is mandatory!";
-  private static final String BAD_VALUE = "Code must be a three-digit positive number!";
+  private final String MANDATORY = "Last name is mandatory!";
+  private final String BAD_VALUE = "Last name must have at least 1 character and maximum of 40 characters!";
   
   @Override
   public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
     if (value == null) {
       throw new ValidatorException(new FacesMessage(MANDATORY));
     }
-    Integer intValue = (Integer) value;
-    if (intValue < 100 || intValue > 999) {
+    String stringValue = (String) value;
+    if (stringValue.trim().isEmpty() || stringValue.trim().length() < 1 || stringValue.trim().length() > 40) {
       throw new ValidatorException(new FacesMessage(BAD_VALUE));
     }
   }
+  
 }

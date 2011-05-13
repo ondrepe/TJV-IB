@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
 @Table(name = "currencyrate")
 @NamedQueries({
   @NamedQuery(name = "CurrencyRatePO.findAll", query = "SELECT c FROM CurrencyRatePO c"),
+  @NamedQuery(name = "CurrencyRatePO.findByCodeAndRate", query = "SELECT c FROM CurrencyRatePO c WHERE c.code = :code AND c.rate = :rate"),
   @NamedQuery(name = "CurrencyRatePO.findByCode", query = "SELECT c FROM CurrencyRatePO c WHERE c.code = :code"),
   @NamedQuery(name = "CurrencyRatePO.findByRate", query = "SELECT c FROM CurrencyRatePO c WHERE c.rate = :rate")})
 public class CurrencyRatePO implements Serializable {

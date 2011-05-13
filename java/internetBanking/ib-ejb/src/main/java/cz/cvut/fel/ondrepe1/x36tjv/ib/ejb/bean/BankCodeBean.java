@@ -1,7 +1,10 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.bank.BankSetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IBankCodeBean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.BankCode;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -23,25 +26,6 @@ public class BankCodeBean implements IBankCodeBean {
 
   @PersistenceContext
   private EntityManager em;
-  
-  @Override
-  public boolean existBankCode(int i) {
-    BankPO bank = em.find(BankPO.class, i);
-    if(bank != null) {
-      return true;
-    }
-    return false;
-  }
-
-  @Override
-  public boolean existBankName(String string) {
-    Query query = em.createNamedQuery("BankPO.findByName").setParameter("name", string);
-    List<BankCode> banks = query.getResultList();
-    if(banks != null && !banks.isEmpty()) {
-      return true;
-    }
-    return false;
-  }
 
   @Override
   public List<BankCode> getAll() {
@@ -51,16 +35,16 @@ public class BankCodeBean implements IBankCodeBean {
 
   @Override
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-  public void delete(int i) {
+  public void delete(int i) throws CommonIBException {
     BankPO bank = em.find(BankPO.class, i);
     em.remove(bank);
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-  public void set(BankCode bc) {
-    BankPO bank = new BankPO(bc.getCode(), bc.getName());
-    em.persist(bank);
+  public void set(BankCode bc) throws CommonIBException {
+    CommonSetCommand command = new BankSetCommand(em);
+    command.set(bc);
   }
   
 }

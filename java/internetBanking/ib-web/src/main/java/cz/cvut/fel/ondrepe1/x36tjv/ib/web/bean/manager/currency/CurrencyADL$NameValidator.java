@@ -1,7 +1,5 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.manager.currency;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICurrencyCodeBean;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -18,12 +16,8 @@ import javax.faces.validator.ValidatorException;
 @RequestScoped
 public class CurrencyADL$NameValidator implements Validator {
 
-  private static final String MANDATORY = "Jméno je povinné!";
-  private static final String ONLY_SPACES = "Jméno musí obsahovat viditelné znaky!";
-  private static final String USED = "Jméno je použito!";
-
-  @EJB
-  private ICurrencyCodeBean bankBean;
+  private static final String MANDATORY = "Name is mandatory!";
+  private static final String BAD_VALUE = "Name must be non-empty string!";
   
   @Override
   public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
@@ -31,15 +25,8 @@ public class CurrencyADL$NameValidator implements Validator {
       throw new ValidatorException(new FacesMessage(MANDATORY));
     }
     String stringValue = (String) value;
-    if (stringValue.trim().isEmpty()) {
-      throw new ValidatorException(new FacesMessage(ONLY_SPACES));
+    if (stringValue.trim().isEmpty() || stringValue.trim().length() > 250) {
+      throw new ValidatorException(new FacesMessage(BAD_VALUE));
     }
-    if(exist(stringValue)) {
-      throw new ValidatorException(new FacesMessage(USED));
-    }
-  }
-  
-  private boolean exist(String name) {
-    return bankBean.existCurrencyName(name);
   }
 }
