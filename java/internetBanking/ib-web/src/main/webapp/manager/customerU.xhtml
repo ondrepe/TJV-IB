@@ -7,11 +7,11 @@
 
   <ui:define name="content">
     <h:form>
-      <h:dataTable var="customer" value="#{customerAD.list}" binding="#{customerAD.htmlDataTable}">
+      <h:dataTable var="customer" value="#{customerU.list}" binding="#{customerU.htmlDataTable}">
         <h:column>
           <f:facet name="header">Select</f:facet>
          <!-- <h:selectOneRadio value="{customerAD.selectedItem}" onclick="radioButton(this);" valueChangeListener="{customerAD.setSelected}"> -->
-          <h:selectOneRadio value="#{customerAD.item.id}" onclick="radioButton(this);">
+          <h:selectOneRadio value="#{customerU.item.id}" onclick="radioButton(this);">
             <f:selectItem itemValue="#{customer.id}" />
           </h:selectOneRadio>
         </h:column>
@@ -34,13 +34,13 @@
       </h:dataTable>
 
       <h:panelGrid columns="3">
-        First name: <h:inputText id="firstName" value="#{customerAD.item.firstName}" validator="#{customer$FirstNameValidator.validate}" />
+        First name: <h:inputText id="firstName" value="#{customerU.item.firstName}" validator="#{customer$FirstNameValidator.validate}" />
         <h:message for="firstName" />
-        Last name: <h:inputText id="lastName" value="#{customerAD.item.lastName}" validator="#{customer$LastNameValidator.validate}" />
+        Last name: <h:inputText id="lastName" value="#{customerU.item.lastName}" validator="#{customer$LastNameValidator.validate}" />
         <h:message for="lastName" />
-        Email: <h:inputText id="email" value="#{customerAD.item.email}" validator="#{customer$EmailValidator.validate}" />
+        Email: <h:inputText id="email" value="#{customerU.item.email}" validator="#{customer$EmailValidator.validate}" />
         <h:message for="email" />
-        <h:commandButton value="Update" action="#{customerAD.add}" />
+        <h:commandButton value="Update" action="#{customerU.add}" />
       </h:panelGrid>
     </h:form>
 

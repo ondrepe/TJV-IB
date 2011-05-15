@@ -23,17 +23,17 @@
 
     <h:form>
       <h:panelGrid columns="3">
-        Kód: <h:inputText id="code" value="#{currencyADL.item.code}" validator="#{currencyADL$CodeValidator.validate}" />
+        Code: <h:inputText id="code" value="#{currencyADL.item.code}" validator="#{currencyADL$CodeValidator.validate}" />
         <h:message for="code" />
-        Název: <h:inputText id="name" value="#{currencyADL.item.name}" validator="#{currencyADL$NameValidator.validate}" />
+        Name: <h:inputText id="name" value="#{currencyADL.item.name}" validator="#{currencyADL$NameValidator.validate}" />
         <h:message for="name" />
-        Počet desetinných míst: <h:selectOneMenu value="#{currencyADL.item.decimalDigits}">
+        Decimal digits: <h:selectOneMenu id="decDigits" value="#{currencyADL.item.decimalDigits}">
           <f:selectItem itemLabel="0" itemValue="0" />
           <f:selectItem itemLabel="1" itemValue="1" />
           <f:selectItem itemLabel="2" itemValue="2" />
         </h:selectOneMenu>
         <h:message for="decDigits" />
-        <h:commandButton value="Přidat" action="#{currencyADL.add}" />
+        <h:commandButton value="Update" action="#{currencyADL.add}" />
       </h:panelGrid>
     </h:form>
 
@@ -42,7 +42,7 @@
         <h:selectOneMenu value="#{currencyADL.selectedItem}">
           <f:selectItems itemLabel="#{currency.name}" itemValue="#{currency.code}" var="currency" value="#{currencyADL.list}" />
         </h:selectOneMenu>
-        <h:commandButton value="Smazat" action="#{currencyADL.delete}" />
+        <h:commandButton value="Delete" action="#{currencyADL.delete}" />
       </h:panelGrid>
     </h:form>
   </ui:define>

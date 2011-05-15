@@ -8,22 +8,22 @@
   <ui:define name="content">
     <h:dataTable var="bank" value="#{bankADL.list}">
       <h:column>
-        <f:facet name="header">Kód</f:facet>
+        <f:facet name="header">code</f:facet>
         #{bank.code}
       </h:column>
       <h:column>
-        <f:facet name="header">Název</f:facet>
+        <f:facet name="header">name</f:facet>
         #{bank.name}
       </h:column>
     </h:dataTable>
 
     <h:form>
       <h:panelGrid columns="3">
-        Kód: <h:inputText id="code" value="#{bankADL.item.code}" validator="#{bankADL$CodeValidator.validate}" />
+        Code: <h:inputText id="code" value="#{bankADL.item.code}" validator="#{bankADL$CodeValidator.validate}" />
         <h:message for="code" />
-        Název: <h:inputText id="name" value="#{bankADL.item.name}" validator="#{bankADL$NameValidator.validate}" />
+        Name: <h:inputText id="name" value="#{bankADL.item.name}" validator="#{bankADL$NameValidator.validate}" />
         <h:message for="name" />
-        <h:commandButton value="Přidat" action="#{bankADL.add}" />
+        <h:commandButton value="Update" action="#{bankADL.add}" />
       </h:panelGrid>
     </h:form>
 
@@ -32,7 +32,7 @@
         <h:selectOneMenu value="#{bankADL.selectedItem}">
           <f:selectItems itemLabel="#{bank.name}" itemValue="#{bank.code}" var="bank" value="#{bankADL.list}" />
         </h:selectOneMenu>
-        <h:commandButton value="Smazat" action="#{bankADL.delete}" />
+        <h:commandButton value="Delete" action="#{bankADL.delete}" />
       </h:panelGrid>
     </h:form>
   </ui:define>

@@ -19,12 +19,13 @@
 
     <h:form>
       <h:panelGrid columns="3">
-        Kód: <h:selectOneMenu value="#{currencyRateADL.item.code}">
+        Code: <h:selectOneMenu id="code" value="#{currencyRateADL.item.code}">
           <f:selectItems itemLabel="#{currency.code}" itemValue="#{currency.code}" var="currency" value="#{currencyRateADL.currencyList}" />
         </h:selectOneMenu>
-        Sazba: <h:inputText id="name" value="#{currencyRateADL.item.rate}" validator="#{currencyRateADL$RateValidator.validate}" />
-        <h:message for="name" />
-        <h:commandButton value="Přidat" action="#{currencyRateADL.add}" />
+        <h:message for="code" />
+        Rate: <h:inputText id="rate" value="#{currencyRateADL.item.rate}" validator="#{currencyRateADL$RateValidator.validate}" />
+        <h:message for="rate" />
+        <h:commandButton value="Update" action="#{currencyRateADL.add}" />
       </h:panelGrid>
     </h:form>
 
@@ -33,7 +34,7 @@
         <h:selectOneMenu value="#{currencyRateADL.selectedItem}">
           <f:selectItems itemLabel="#{rate.code}" itemValue="#{rate.code}" var="rate" value="#{currencyRateADL.list}" />
         </h:selectOneMenu>
-        <h:commandButton value="Smazat" action="#{currencyRateADL.delete}" />
+        <h:commandButton value="Delete" action="#{currencyRateADL.delete}" />
       </h:panelGrid>
     </h:form>
   </ui:define>

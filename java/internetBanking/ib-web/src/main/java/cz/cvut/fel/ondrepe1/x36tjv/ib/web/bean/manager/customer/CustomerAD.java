@@ -8,8 +8,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.component.html.HtmlDataTable;
-import javax.faces.event.ValueChangeEvent;
 
 /**
  *
@@ -21,15 +19,6 @@ public class CustomerAD extends ADLBean<Customer> {
 
   @EJB
   private ICustomerBean customerBean;
-  private HtmlDataTable htmlDataTable;
-
-  public HtmlDataTable getHtmlDataTable() {
-    return htmlDataTable;
-  }
-
-  public void setHtmlDataTable(HtmlDataTable htmlDataTable) {
-    this.htmlDataTable = htmlDataTable;
-  }
   
   @Override
   protected void addItem(Customer item) throws CommonIBException {
@@ -50,11 +39,6 @@ public class CustomerAD extends ADLBean<Customer> {
   protected void deleteItem() throws CommonIBException {
     Integer id = Integer.parseInt(getSelectedItem());
     customerBean.delete(id);
-  }
-  
-  public void setSelected(ValueChangeEvent event) {
-    Object obj = htmlDataTable.getRowData();
-    setItem((Customer) obj);
   }
   
 }
