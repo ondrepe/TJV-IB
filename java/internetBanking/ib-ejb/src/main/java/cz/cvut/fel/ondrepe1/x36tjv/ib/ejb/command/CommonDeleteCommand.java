@@ -7,12 +7,10 @@ import javax.persistence.EntityManager;
  *
  * @author ondrepe
  */
-public abstract class CommonDeleteCommand {
-  
-  protected EntityManager em;
+public abstract class CommonDeleteCommand extends CommonCommand {
 
   public CommonDeleteCommand(EntityManager em) {
-    this.em = em;
+    super(em);
   }
   
   public void delete(Object id) throws CommonIBException {

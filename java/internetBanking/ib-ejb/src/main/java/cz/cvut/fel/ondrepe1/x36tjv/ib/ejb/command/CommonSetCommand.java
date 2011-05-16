@@ -8,12 +8,10 @@ import javax.persistence.EntityManager;
  *
  * @author ondrepe
  */
-public abstract class CommonSetCommand<T extends AbstractIFaceObject> {
-  
-  protected EntityManager em;
+public abstract class CommonSetCommand<T extends AbstractIFaceObject> extends CommonCommand {
 
   public CommonSetCommand(EntityManager em) {
-    this.em = em;
+    super(em);
   }
   
   public void set(T object) throws CommonIBException {

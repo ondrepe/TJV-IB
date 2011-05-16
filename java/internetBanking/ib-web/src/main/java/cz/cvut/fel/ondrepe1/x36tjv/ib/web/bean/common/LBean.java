@@ -1,5 +1,6 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common;
 
+import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface.IListBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.AbstractIFaceObject;
 import java.util.List;
 

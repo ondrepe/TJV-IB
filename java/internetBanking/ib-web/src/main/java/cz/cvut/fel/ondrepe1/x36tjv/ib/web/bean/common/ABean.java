@@ -1,14 +1,14 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface.IAddBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.AbstractIFaceObject;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface.IAddBean;
 
 /**
  *
  * @author ondrepe
  */
-public abstract class ADLBean<T extends AbstractIFaceObject> extends DLBean<T> implements IAddBean {
+public abstract class ABean<T extends AbstractIFaceObject> implements IAddBean {
   
   private T item;
   
@@ -19,7 +19,7 @@ public abstract class ADLBean<T extends AbstractIFaceObject> extends DLBean<T> i
   public final void add() {
     try {
      addItem(item);
-     reload();
+     item = initItem();
     } catch(CommonIBException ex) {
     
     }
@@ -35,5 +35,4 @@ public abstract class ADLBean<T extends AbstractIFaceObject> extends DLBean<T> i
     }
     return item;
   }
-  
 }

@@ -1,4 +1,4 @@
-package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common;
+package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface;
 
 /**
  *

@@ -1,5 +1,7 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common;
 
+import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface.IListBean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface.IDeleteBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.AbstractIFaceObject;
 import java.util.List;
@@ -8,21 +10,11 @@ import java.util.List;
  *
  * @author ondrepe
  */
-public abstract class DLBean <T extends AbstractIFaceObject> implements IListBean<T>, IDeleteBean {
+public abstract class DLBean <T extends AbstractIFaceObject> extends LBean<T> implements IListBean<T>, IDeleteBean {
   
   private String selectedItem;
-  private List<T> list;
   
-  protected abstract List<T> load();
   protected abstract void deleteItem() throws CommonIBException;
-  
-  @Override
-  public final List<T> getList() {
-    if(this.list == null) {
-      this.list = load();
-    }
-    return this.list;
-  }
 
   public void setSelectedItem(String selectedItem) {
     this.selectedItem = selectedItem;
@@ -30,10 +22,6 @@ public abstract class DLBean <T extends AbstractIFaceObject> implements IListBea
 
   public String getSelectedItem() {
     return selectedItem;
-  }
-  
-  public final void reload() {
-    this.list = load();
   }
   
   @Override

@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "customeraccount")
 @NamedQueries({
+  @NamedQuery(name = "CustomerAccountPO.findAllAccByCustomer", query = "SELECT c.idAccount FROM CustomerAccountPO c WHERE c.idCustomer.id = :customerId AND c.idAccount.valid = :valid"),
   @NamedQuery(name = "CustomerAccountPO.findAll", query = "SELECT c FROM CustomerAccountPO c"),
   @NamedQuery(name = "CustomerAccountPO.findById", query = "SELECT c FROM CustomerAccountPO c WHERE c.id = :id")})
 public class CustomerAccountPO implements Serializable {
