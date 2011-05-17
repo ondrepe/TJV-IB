@@ -11,6 +11,7 @@ public class Account extends AbstractIFaceObject {
   private Integer id;
   private Integer customerId;
   private String currencyCode;
+  private String accountNumber;
   private BigDecimal balance;
 
   public BigDecimal getBalance() {
@@ -21,6 +22,14 @@ public class Account extends AbstractIFaceObject {
     this.balance = balance;
   }
 
+  public String getAccountNumber() {
+    return accountNumber;
+  }
+
+  public void setAccountNumber(String accountNumber) {
+    this.accountNumber = accountNumber;
+  }
+  
   public String getCurrencyCode() {
     return currencyCode;
   }

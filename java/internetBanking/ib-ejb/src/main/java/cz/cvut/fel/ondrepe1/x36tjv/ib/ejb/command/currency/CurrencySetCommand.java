@@ -32,8 +32,7 @@ public class CurrencySetCommand extends CommonSetCommand<CurrencyCode> {
       if (bank != null) {
         throw new EntityExistIBException("CurrencyCode");
       }
-    } catch (PersistenceException ex) {
-    }
+    } catch (PersistenceException ex) {}
   }
 
   @Override

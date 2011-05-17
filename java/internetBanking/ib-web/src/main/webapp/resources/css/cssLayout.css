@@ -18,7 +18,7 @@
     float: left;
     background-color: #ece3a5;
     padding: 5px;
-    width: 150px;
+    width: 300px;
 }
 
 #right {
@@ -37,13 +37,13 @@
 .left_content {
     background-color: #dddddd;
     padding: 5px;
-    margin-left: 170px;
+    margin-left: 320px;
 }
 
 .right_content {
     background-color: #dddddd;
     padding: 5px;
-    margin: 0px 170px 0px 170px;
+    margin: 0px 320px 0px 320px;
 }
 
 #top a:link, #top a:visited {

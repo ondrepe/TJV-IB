@@ -36,7 +36,7 @@ public class AccountBean implements IAccountBean {
   }
 
   @Override
-  @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void add(Account acc) throws CommonIBException {
     CommonSetCommand command = new AccountSetCommand(em);
     command.set(acc);

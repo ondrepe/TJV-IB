@@ -16,11 +16,12 @@ public abstract class CommonSetCommand<T extends AbstractIFaceObject> extends Co
   
   public void set(T object) throws CommonIBException {
     validate(object);
-    try {
-      execute(object);
-    } catch(Throwable t) {
-      throw new CommonIBException("Exception occured in " + this.getClass().getSimpleName() + ".", t);
-    }
+    execute(object);
+//    try {
+//      execute(object);
+//    } catch(Throwable t) {
+//      throw new CommonIBException("Exception occured in " + this.getClass().getSimpleName() + ".", t);
+//    }
   }
   
   protected abstract void validate(T object) throws CommonIBException;

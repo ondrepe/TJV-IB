@@ -1,14 +1,12 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -26,19 +24,15 @@ import javax.validation.constraints.Size;
 public class CurrencyPO implements Serializable {
 
   private static final long serialVersionUID = 1L;
+  
   @Id
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 3)
   @Column(name = "code")
   private String code;
-  @Basic(optional = false)
-  @NotNull
+  
   @Size(min = 1, max = 45)
   @Column(name = "name")
   private String name;
-  @Basic(optional = false)
-  @NotNull
+  
   @Column(name = "decimalDigits")
   private int decimalDigits;
 
@@ -78,30 +72,4 @@ public class CurrencyPO implements Serializable {
   public void setDecimalDigits(int decimalDigits) {
     this.decimalDigits = decimalDigits;
   }
-
-  @Override
-  public int hashCode() {
-    int hash = 0;
-    hash += (code != null ? code.hashCode() : 0);
-    return hash;
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof CurrencyPO)) {
-      return false;
-    }
-    CurrencyPO other = (CurrencyPO) object;
-    if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    return "cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrencyPO[ code=" + code + " ]";
-  }
-  
 }

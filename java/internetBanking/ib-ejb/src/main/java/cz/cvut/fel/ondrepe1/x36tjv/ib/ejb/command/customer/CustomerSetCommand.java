@@ -1,6 +1,8 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.customer;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AutentizationGroupPO;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AutentizationPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.EntityExistIBException;
@@ -42,15 +44,28 @@ public class CustomerSetCommand extends CommonSetCommand<Customer> {
   protected void execute(Customer cstmr) {
     CustomerPO cust;
     if (cstmr.getId() == null) {
-      cust = new CustomerPO(10000 + cstmr.getFirstName().length(), cstmr.getFirstName(), cstmr.getLastName(), cstmr.getEmail());
-      cust.setValid("Y");
+      AutentizationGroupPO agPo = em.find(AutentizationGroupPO.class, "CUSTOMER");
+      AutentizationPO aPo = new AutentizationPO();
+      aPo.setLogin(createLogin(cstmr));
+      aPo.setPassword("955db0b81ef1989b4a4dfeae8061a9a6");
+      aPo.setGroup(agPo);
+      
+      cust = new CustomerPO();
+      cust.setAutentization(aPo);
     } else {
       cust = em.find(CustomerPO.class, cstmr.getId());
-      cust.setFirstName(cstmr.getFirstName());
-      cust.setLastName(cstmr.getLastName());
-      cust.setEmail(cstmr.getLastName());
-      cust.setValid("Y");
     }
+    cust.setFirstName(cstmr.getFirstName());
+    cust.setLastName(cstmr.getLastName());
+    cust.setEmail(cstmr.getEmail());
+    cust.setValid("Y");
     em.persist(cust);
   }
+  
+  protected String createLogin(Customer cstmr) {
+    StringBuilder builder = new StringBuilder();
+    builder.append(cstmr.getLastName().substring(0, 5).toLowerCase());
+    builder.append(cstmr.getFirstName().substring(0, 3).toLowerCase());
+    return builder.toString();
+  } 
 }

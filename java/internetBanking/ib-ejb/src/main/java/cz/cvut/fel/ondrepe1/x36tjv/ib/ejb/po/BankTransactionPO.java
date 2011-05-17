@@ -3,19 +3,19 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -33,56 +33,54 @@ import javax.validation.constraints.Size;
   @NamedQuery(name = "BankTransactionPO.findByDescription", query = "SELECT b FROM BankTransactionPO b WHERE b.description = :description"),
   @NamedQuery(name = "BankTransactionPO.findByCreationTime", query = "SELECT b FROM BankTransactionPO b WHERE b.creationTime = :creationTime")})
 public class BankTransactionPO implements Serializable {
+  
   private static final long serialVersionUID = 1L;
+  
   @Id
-  @Basic(optional = false)
-  @NotNull
   @Column(name = "id")
+  @GeneratedValue(generator = "idTrTableGen", strategy=GenerationType.TABLE)
+  @TableGenerator(name = "idTrTableGen", table = "idtable", pkColumnName = "name", valueColumnName = "val", pkColumnValue = "transaction", initialValue = 10000, allocationSize = 200)
   private Integer id;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 250)
+  
   @Column(name = "accountFrom")
-  private String accountFrom;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 250)
+  private String accountNumberFrom;
+  
   @Column(name = "accountTo")
-  private String accountTo;
-  // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-  @Basic(optional = false)
-  @NotNull
+  private String accountNumberTo;
+  
   @Column(name = "amountFrom")
   private BigDecimal amountFrom;
-  @Basic(optional = false)
-  @NotNull
+  
   @Column(name = "amountTo")
   private BigDecimal amountTo;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 250)
+  
   @Column(name = "description")
   private String description;
-  @Basic(optional = false)
-  @NotNull
+  
   @Column(name = "creationTime")
   @Temporal(TemporalType.TIMESTAMP)
   private Date creationTime;
+  
   @JoinColumn(name = "idAccountTo", referencedColumnName = "id")
   @ManyToOne
-  private AccountPO idAccountTo;
+  private AccountPO accountTo;
+  
   @JoinColumn(name = "idAccountFrom", referencedColumnName = "id")
   @ManyToOne
-  private AccountPO idAccountFrom;
+  private AccountPO accountFrom;
+  
   @JoinColumn(name = "currencyTo", referencedColumnName = "code")
   @ManyToOne(optional = false)
   private CurrencyPO currencyTo;
+  
   @JoinColumn(name = "currencyFrom", referencedColumnName = "code")
   @ManyToOne(optional = false)
   private CurrencyPO currencyFrom;
+  
   @JoinColumn(name = "bankTo", referencedColumnName = "code")
   @ManyToOne(optional = false)
   private BankPO bankTo;
+  
   @JoinColumn(name = "bankFrom", referencedColumnName = "code")
   @ManyToOne(optional = false)
   private BankPO bankFrom;
@@ -96,8 +94,8 @@ public class BankTransactionPO implements Serializable {
 
   public BankTransactionPO(Integer id, String accountFrom, String accountTo, BigDecimal amountFrom, BigDecimal amountTo, String description, Date creationTime) {
     this.id = id;
-    this.accountFrom = accountFrom;
-    this.accountTo = accountTo;
+    this.accountNumberFrom = accountFrom;
+    this.accountNumberTo = accountTo;
     this.amountFrom = amountFrom;
     this.amountTo = amountTo;
     this.description = description;
@@ -112,20 +110,20 @@ public class BankTransactionPO implements Serializable {
     this.id = id;
   }
 
-  public String getAccountFrom() {
-    return accountFrom;
+  public String getAccountNumberFrom() {
+    return accountNumberFrom;
   }
 
-  public void setAccountFrom(String accountFrom) {
-    this.accountFrom = accountFrom;
+  public void setAccountNumberFrom(String accountNumberFrom) {
+    this.accountNumberFrom = accountNumberFrom;
   }
 
-  public String getAccountTo() {
-    return accountTo;
+  public String getAccountNumberTo() {
+    return accountNumberTo;
   }
 
-  public void setAccountTo(String accountTo) {
-    this.accountTo = accountTo;
+  public void setAccountNumberTo(String accountNumberTo) {
+    this.accountNumberTo = accountNumberTo;
   }
 
   public BigDecimal getAmountFrom() {
@@ -160,20 +158,20 @@ public class BankTransactionPO implements Serializable {
     this.creationTime = creationTime;
   }
 
-  public AccountPO getIdAccountTo() {
-    return idAccountTo;
+  public AccountPO getAccountTo() {
+    return accountTo;
   }
 
-  public void setIdAccountTo(AccountPO idAccountTo) {
-    this.idAccountTo = idAccountTo;
+  public void setAccountTo(AccountPO accountTo) {
+    this.accountTo = accountTo;
   }
 
-  public AccountPO getIdAccountFrom() {
-    return idAccountFrom;
+  public AccountPO getAccountFrom() {
+    return accountFrom;
   }
 
-  public void setIdAccountFrom(AccountPO idAccountFrom) {
-    this.idAccountFrom = idAccountFrom;
+  public void setAccountFrom(AccountPO accountFrom) {
+    this.accountFrom = accountFrom;
   }
 
   public CurrencyPO getCurrencyTo() {
@@ -207,30 +205,4 @@ public class BankTransactionPO implements Serializable {
   public void setBankFrom(BankPO bankFrom) {
     this.bankFrom = bankFrom;
   }
-
-  @Override
-  public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
-    return hash;
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof BankTransactionPO)) {
-      return false;
-    }
-    BankTransactionPO other = (BankTransactionPO) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    return "cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankTransactionPO[ id=" + id + " ]";
-  }
-  
 }

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./ibTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:define name="content">
+
+    <h:form>
+      <h:panelGrid columns="3">
+        First name: <h:inputText id="firstName" value="#{customerAD.item.firstName}" validator="#{customer$FirstNameValidator.validate}" />
+        <h:message for="firstName" />
+        Last name: <h:inputText id="lastName" value="#{customerAD.item.lastName}" validator="#{customer$LastNameValidator.validate}" />
+        <h:message for="lastName" />
+        Email: <h:inputText id="email" value="#{customerAD.item.email}" validator="#{customer$EmailValidator.validate}" />
+        <h:message for="email" />
+        <h:commandButton value="Add" action="#{customerAD.add}" />
+      </h:panelGrid>
+    </h:form>
+
+    <h:form>
+      <h:panelGrid columns="2">
+        <h:selectOneMenu value="#{customerAD.selectedItem}">
+          <f:selectItems itemLabel="#{customer.firstName} #{customer.lastName} (#{customer.email})" itemValue="#{customer.id}" var="customer" value="#{customerAD.list}" />
+        </h:selectOneMenu>
+        <h:commandButton value="Delete" action="#{customerAD.delete}" />
+      </h:panelGrid>
+    </h:form>
+  </ui:define>
+
+</ui:composition>

@@ -2,11 +2,11 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.account;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListByIdCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 /**
  *
@@ -20,10 +20,8 @@ public class AccountListByIdCommand extends CommonListByIdCommand<Account, Accou
 
   @Override
   protected List<AccountPO> execute(int id) {
-    Query query = em.createNamedQuery("CustomerAccountPO.findAllAccByCustomer");
-    query.setParameter("customerId", id);
-    query.setParameter("valid", "Y");
-    return query.getResultList();
+    CustomerPO cPo = em.find(CustomerPO.class, id);
+    return cPo.getAccounts();
   }
 
   @Override
@@ -32,7 +30,8 @@ public class AccountListByIdCommand extends CommonListByIdCommand<Account, Accou
     for(AccountPO accPO : listPo) {
       Account acc = new Account();
       acc.setId(accPO.getId());
-      acc.setCurrencyCode(accPO.getCode().getCode());
+      acc.setCurrencyCode(accPO.getCurrency().getCode());
+      acc.setAccountNumber(accPO.getAccountNumber());
       acc.setBalance(accPO.getBalance());
       list.add(acc);
     }

@@ -1,63 +1,68 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.TableGenerator;
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.OptimisticLocking;
+import org.eclipse.persistence.annotations.OptimisticLockingType;
 
 /**
  *
  * @author ondrepe
  */
 @Entity
+@Cache(alwaysRefresh=true)
 @Table(name = "customer")
+@OptimisticLocking(type= OptimisticLockingType.ALL_COLUMNS)
 @NamedQueries({
   @NamedQuery(name = "CustomerPO.findAll", query = "SELECT c FROM CustomerPO c"),
   @NamedQuery(name = "CustomerPO.findByValid", query = "SELECT c FROM CustomerPO c WHERE c.valid = :valid"),
-  @NamedQuery(name = "CustomerPO.findById", query = "SELECT c FROM CustomerPO c WHERE c.id = :id"),
-  @NamedQuery(name = "CustomerPO.findByAll", query = "SELECT c FROM CustomerPO c WHERE c.firstName = :firstName AND c.lastName = :lastName AND c.email = :email"),
-  @NamedQuery(name = "CustomerPO.findByFirstName", query = "SELECT c FROM CustomerPO c WHERE c.firstName = :firstName"),
-  @NamedQuery(name = "CustomerPO.findByLastName", query = "SELECT c FROM CustomerPO c WHERE c.lastName = :lastName"),
-  @NamedQuery(name = "CustomerPO.findByEmail", query = "SELECT c FROM CustomerPO c WHERE c.email = :email")})
+  @NamedQuery(name = "CustomerPO.findByAll", query = "SELECT c FROM CustomerPO c WHERE c.firstName = :firstName AND c.lastName = :lastName AND c.email = :email")})
 public class CustomerPO implements Serializable {
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 250)
-  @Column(name = "lastName")
-  private String lastName;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 1)
-  @Column(name = "valid")
-  private String valid;
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCustomer")
-  private List<CustomerAccountPO> customerAccountPOList;
+    
   private static final long serialVersionUID = 1L;
+  
   @Id
-  @Basic(optional = false)
-  @NotNull
   @Column(name = "id")
+  @GeneratedValue(generator = "idCustTableGen", strategy=GenerationType.TABLE)
+  @TableGenerator(name = "idCustTableGen", table = "idtable", pkColumnName = "name", valueColumnName = "val", pkColumnValue = "customer", initialValue = 10000, allocationSize = 200)
   private Integer id;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 250)
+  
   @Column(name = "firstName")
   private String firstName;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 500)
+  
+  @Column(name = "lastName")
+  private String lastName;
+  
   @Column(name = "email")
   private String email;
 
+  @Column(name = "valid")
+  private String valid;
+  
+  @ManyToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
+  @JoinTable(name = "customeraccount", joinColumns = { @JoinColumn(name = "idCustomer")}, inverseJoinColumns={@JoinColumn(name="idAccount")})
+  private List<AccountPO> accounts;
+  
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "customer")
+  private AutentizationPO autentization;
+  
   public CustomerPO() {
   }
 
@@ -96,31 +101,6 @@ public class CustomerPO implements Serializable {
     this.email = email;
   }
 
-  @Override
-  public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
-    return hash;
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof CustomerPO)) {
-      return false;
-    }
-    CustomerPO other = (CustomerPO) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-      return false;
-    }
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    return "cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO[ id=" + id + " ]";
-  }
-
   public String getLastName() {
     return lastName;
   }
@@ -137,12 +117,19 @@ public class CustomerPO implements Serializable {
     this.valid = valid;
   }
 
-  public List<CustomerAccountPO> getCustomerAccountPOList() {
-    return customerAccountPOList;
+  public List<AccountPO> getAccounts() {
+    if(accounts == null) {
+      accounts = new ArrayList<AccountPO>();
+    }
+    return accounts;
   }
 
-  public void setCustomerAccountPOList(List<CustomerAccountPO> customerAccountPOList) {
-    this.customerAccountPOList = customerAccountPOList;
+  public AutentizationPO getAutentization() {
+    return autentization;
+  }
+
+  public void setAutentization(AutentizationPO autentization) {
+    this.autentization = autentization;
   }
   
 }

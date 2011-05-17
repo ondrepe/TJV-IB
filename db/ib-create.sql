@@ -79,10 +79,8 @@ ENGINE = InnoDB;
 -- Table `internetbanking`.`customeraccount`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `internetbanking`.`customeraccount` (
-  `id` INT NOT NULL ,
   `idAccount` INT NOT NULL ,
   `idCustomer` INT NOT NULL ,
-  PRIMARY KEY (`id`) ,
   INDEX `fk_CustomerAccount_Account1` (`idAccount` ASC) ,
   INDEX `fk_CustomerAccount_Customer1` (`idCustomer` ASC) ,
   CONSTRAINT `fk_CustomerAccount_Account1`
@@ -170,7 +168,112 @@ CREATE  TABLE IF NOT EXISTS `internetbanking`.`currentcurrencyrate` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `internetbanking`.`idtable`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `internetbanking`.`idtable` (
+  `name` VARCHAR(50) NOT NULL ,
+  `val` INT NOT NULL ,
+  PRIMARY KEY (`name`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `internetbanking`.`autentizationgroup`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `internetbanking`.`autentizationgroup` (
+  `groupName` VARCHAR(20) NOT NULL ,
+  PRIMARY KEY (`groupName`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `internetbanking`.`autentization`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `internetbanking`.`autentization` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `login` VARCHAR(45) NOT NULL ,
+  `password` VARCHAR(45) NOT NULL ,
+  `groupName` VARCHAR(20) NOT NULL ,
+  `idCustomer` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_autentization_customer1` (`idCustomer` ASC) ,
+  INDEX `fk_autentization_autentizationgroup1` (`groupName` ASC) ,
+  CONSTRAINT `fk_autentization_customer1`
+    FOREIGN KEY (`idCustomer` )
+    REFERENCES `internetbanking`.`customer` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_autentization_autentizationgroup1`
+    FOREIGN KEY (`groupName` )
+    REFERENCES `internetbanking`.`autentizationgroup` (`groupName` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `internetbanking`.`globalparam`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `internetbanking`.`globalparam` (
+  `code` VARCHAR(20) NOT NULL ,
+  `value` VARCHAR(255) NOT NULL ,
+  `dataType` VARCHAR(1) NOT NULL ,
+  PRIMARY KEY (`code`) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `internetbanking`.`bank`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+USE `internetbanking`;
+INSERT INTO `internetbanking`.`bank` (`code`, `name`) VALUES (666, 'OndrepeBank');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `internetbanking`.`idtable`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+USE `internetbanking`;
+INSERT INTO `internetbanking`.`idtable` (`name`, `val`) VALUES ('account', 10000);
+INSERT INTO `internetbanking`.`idtable` (`name`, `val`) VALUES ('transaction', 10000);
+INSERT INTO `internetbanking`.`idtable` (`name`, `val`) VALUES ('customer', 10000);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `internetbanking`.`autentizationgroup`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+USE `internetbanking`;
+INSERT INTO `internetbanking`.`autentizationgroup` (`groupName`) VALUES ('MANAGER');
+INSERT INTO `internetbanking`.`autentizationgroup` (`groupName`) VALUES ('CUSTOMER');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `internetbanking`.`autentization`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+USE `internetbanking`;
+INSERT INTO `internetbanking`.`autentization` (`id`, `login`, `password`, `groupName`, `idCustomer`) VALUES (1, 'karel', '2cd324f30dc548396570da4e637c53ee', 'MANAGER', NULL);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `internetbanking`.`globalparam`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+USE `internetbanking`;
+INSERT INTO `internetbanking`.`globalparam` (`code`, `value`, `dataType`) VALUES ('MYBANKCODE', '666', 'N');
+INSERT INTO `internetbanking`.`globalparam` (`code`, `value`, `dataType`) VALUES ('CB_ENDPOINT', 'http://localhost:8080/central-bank-ws/', 'C');
+INSERT INTO `internetbanking`.`globalparam` (`code`, `value`, `dataType`) VALUES ('EO_ENDPOINT', 'http://localhost:8080/ExchangeOffice/exchangerate/', 'C');
+
+COMMIT;

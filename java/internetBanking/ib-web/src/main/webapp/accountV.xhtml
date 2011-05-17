@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./ibTemplate.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:define name="content">
+    <h:dataTable var="account" value="#{accountV.list}">
+      <h:column>
+        <f:facet name="header">Id</f:facet>
+        #{account.id}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Account number</f:facet>
+        #{account.accountNumber}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Currency</f:facet>
+        #{account.currencyCode}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Balance</f:facet>
+        #{account.balance}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Transactions</f:facet>
+        <h:link outcome="transactionV.xhtml">
+          <f:param name="id" value="#{account.id}" />
+          transactions
+        </h:link>
+      </h:column>
+    </h:dataTable>
+
+  </ui:define>
+
+</ui:composition>

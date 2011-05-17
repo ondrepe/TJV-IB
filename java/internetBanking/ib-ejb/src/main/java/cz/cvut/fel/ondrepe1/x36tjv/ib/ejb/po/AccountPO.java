@@ -2,20 +2,23 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.TableGenerator;
 
 /**
  *
@@ -24,42 +27,35 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "account")
 @NamedQueries({
-  @NamedQuery(name = "AccountPO.findAll", query = "SELECT a FROM AccountPO a"),
-  @NamedQuery(name = "AccountPO.findById", query = "SELECT a FROM AccountPO a WHERE a.id = :id"),
-  @NamedQuery(name = "AccountPO.findByAccountNumber", query = "SELECT a FROM AccountPO a WHERE a.accountNumber = :accountNumber"),
-  @NamedQuery(name = "AccountPO.findByBalance", query = "SELECT a FROM AccountPO a WHERE a.balance = :balance"),
+  @NamedQuery(name = "AccountPO.findByAccNum", query = "SELECT a FROM AccountPO a WHERE a.accountNumber = :accountNumber"),
+  @NamedQuery(name = "AccountPO.getAccNums", query = "SELECT a.accountNumber FROM AccountPO a ORDER BY a.accountNumber DESC"),
   @NamedQuery(name = "AccountPO.findByValid", query = "SELECT a FROM AccountPO a WHERE a.valid = :valid")})
 public class AccountPO implements Serializable {
+
   private static final long serialVersionUID = 1L;
+  
   @Id
-  @Basic(optional = false)
-  @NotNull
   @Column(name = "id")
+  @GeneratedValue(generator = "idAccTableGen", strategy=GenerationType.TABLE)
+  @TableGenerator(name = "idAccTableGen", table = "idtable", pkColumnName = "name", valueColumnName = "val", pkColumnValue = "account", initialValue = 10000, allocationSize = 200)
   private Integer id;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 250)
+  
   @Column(name = "accountNumber")
   private String accountNumber;
-  // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-  @Basic(optional = false)
-  @NotNull
+
   @Column(name = "balance")
   private BigDecimal balance;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 1)
+  
   @Column(name = "valid")
   private String valid;
+  
   @JoinColumn(name = "code", referencedColumnName = "code")
   @ManyToOne(optional = false)
-  private CurrencyPO code;
-  @OneToMany(mappedBy = "idAccountTo")
-  private List<BankTransactionPO> bankTransactionPOList;
-  @OneToMany(mappedBy = "idAccountFrom")
-  private List<BankTransactionPO> bankTransactionPOList1;
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAccount")
-  private List<CustomerAccountPO> customerAccountPOList;
+  private CurrencyPO currency;
+  
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinTable(name = "customeraccount", joinColumns = { @JoinColumn(name = "idAccount")}, inverseJoinColumns={@JoinColumn(name="idCustomer")})
+  private List<CustomerPO> customers;
 
   public AccountPO() {
   }
@@ -107,61 +103,18 @@ public class AccountPO implements Serializable {
     this.valid = valid;
   }
 
-  public CurrencyPO getCode() {
-    return code;
+  public CurrencyPO getCurrency() {
+    return currency;
   }
 
-  public void setCode(CurrencyPO code) {
-    this.code = code;
+  public void setCurrency(CurrencyPO currency) {
+    this.currency = currency;
   }
 
-  public List<BankTransactionPO> getBankTransactionPOList() {
-    return bankTransactionPOList;
-  }
-
-  public void setBankTransactionPOList(List<BankTransactionPO> bankTransactionPOList) {
-    this.bankTransactionPOList = bankTransactionPOList;
-  }
-
-  public List<BankTransactionPO> getBankTransactionPOList1() {
-    return bankTransactionPOList1;
-  }
-
-  public void setBankTransactionPOList1(List<BankTransactionPO> bankTransactionPOList1) {
-    this.bankTransactionPOList1 = bankTransactionPOList1;
-  }
-
-  public List<CustomerAccountPO> getCustomerAccountPOList() {
-    return customerAccountPOList;
-  }
-
-  public void setCustomerAccountPOList(List<CustomerAccountPO> customerAccountPOList) {
-    this.customerAccountPOList = customerAccountPOList;
-  }
-
-  @Override
-  public int hashCode() {
-    int hash = 0;
-    hash += (id != null ? id.hashCode() : 0);
-    return hash;
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof AccountPO)) {
-      return false;
+  public List<CustomerPO> getCustomers() {
+    if(customers == null) {
+      customers = new ArrayList<CustomerPO>();
     }
-    AccountPO other = (AccountPO) object;
-    if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-      return false;
-    }
-    return true;
+    return customers;
   }
-
-  @Override
-  public String toString() {
-    return "cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO[ id=" + id + " ]";
-  }
-  
 }

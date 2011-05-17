@@ -1,5 +1,7 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author ondrepe
@@ -7,12 +9,12 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to;
 public class CurrencyRate extends AbstractIFaceObject {
   
   private String code;
-  private Double rate;
+  private BigDecimal rate;
 
   public CurrencyRate() {
   }
 
-  public CurrencyRate(String code, Double rate) {
+  public CurrencyRate(String code, BigDecimal rate) {
     this.code = code;
     this.rate = rate;
   }
@@ -25,11 +27,11 @@ public class CurrencyRate extends AbstractIFaceObject {
     this.code = code;
   }
 
-  public Double getRate() {
+  public BigDecimal getRate() {
     return rate;
   }
 
-  public void setRate(Double rate) {
+  public void setRate(BigDecimal rate) {
     this.rate = rate;
   }
 }

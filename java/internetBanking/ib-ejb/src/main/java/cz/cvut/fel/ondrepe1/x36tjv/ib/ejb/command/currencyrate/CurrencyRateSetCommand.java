@@ -26,7 +26,7 @@ public class CurrencyRateSetCommand extends CommonSetCommand<CurrencyRate> {
   protected void validate(CurrencyRate object) throws CommonIBException {
     //validace objektu
     String code = object.getCode().trim().toUpperCase();
-    Double rate = object.getRate();
+    BigDecimal rate = object.getRate();
 
     if (code.isEmpty() || code.length() > 3) {
       ValidationIBException ex = new ValidationIBException("Currency rate code must have 3 characters!");
@@ -45,8 +45,7 @@ public class CurrencyRateSetCommand extends CommonSetCommand<CurrencyRate> {
       if (cRate != null) {
         throw new EntityExistIBException("CurrencyRate");
       }
-    } catch (PersistenceException ex) {
-    }
+    } catch (PersistenceException ex) {}
   }
 
   @Override
@@ -54,7 +53,7 @@ public class CurrencyRateSetCommand extends CommonSetCommand<CurrencyRate> {
     CurrentCurrencyRatePO ccRate = em.find(CurrentCurrencyRatePO.class, cr.getCode());
     CurrencyRatePO cRate;
     String code = cr.getCode().trim().toUpperCase();
-    BigDecimal rate = new BigDecimal(cr.getRate());
+    BigDecimal rate = cr.getRate();
     if (ccRate == null) {
       ccRate = new CurrentCurrencyRatePO(code, rate);
       cRate = new CurrencyRatePO(code, rate);

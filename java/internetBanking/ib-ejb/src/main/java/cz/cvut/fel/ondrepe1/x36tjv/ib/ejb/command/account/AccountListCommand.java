@@ -31,7 +31,8 @@ public class AccountListCommand extends CommonListCommand<Account, AccountPO> {
     for(AccountPO accPO : listPo) {
       Account acc = new Account();
       acc.setId(accPO.getId());
-      acc.setCurrencyCode(accPO.getCode().getCode());
+      acc.setCurrencyCode(accPO.getCurrency().getCode());
+      acc.setAccountNumber(accPO.getAccountNumber());
       acc.setBalance(accPO.getBalance());
       list.add(acc);
     }
