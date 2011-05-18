@@ -14,8 +14,10 @@ public class Transaction extends AbstractIFaceObject {
   private String accountTo;
   private Integer bankFrom;
   private Integer bankTo;
+  private BigDecimal ammountFrom;
   private BigDecimal ammountTo;
-  private String currencyCode;
+  private String currencyCodeFrom;
+  private String currencyCodeTo;
   private String description;
   private Date transactionTime;
 
@@ -51,6 +53,14 @@ public class Transaction extends AbstractIFaceObject {
     this.accountTo = accountTo;
   }
 
+  public BigDecimal getAmmountFrom() {
+    return ammountFrom;
+  }
+
+  public void setAmmountFrom(BigDecimal ammountFrom) {
+    this.ammountFrom = ammountFrom;
+  }
+
   public BigDecimal getAmmountTo() {
     return ammountTo;
   }
@@ -59,12 +69,20 @@ public class Transaction extends AbstractIFaceObject {
     this.ammountTo = ammountTo;
   }
 
-  public String getCurrencyCode() {
-    return currencyCode;
+  public String getCurrencyCodeFrom() {
+    return currencyCodeFrom;
   }
 
-  public void setCurrencyCode(String currencyCode) {
-    this.currencyCode = currencyCode;
+  public void setCurrencyCodeFrom(String currencyCodeFrom) {
+    this.currencyCodeFrom = currencyCodeFrom;
+  }
+
+  public String getCurrencyCodeTo() {
+    return currencyCodeTo;
+  }
+
+  public void setCurrencyCodeTo(String currencyCodeTo) {
+    this.currencyCodeTo = currencyCodeTo;
   }
 
   public String getDescription() {

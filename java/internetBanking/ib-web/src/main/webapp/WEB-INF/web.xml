@@ -11,7 +11,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>/ib/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -19,20 +19,53 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>ib/index.xhtml</welcome-file>
     </welcome-file-list>
     <security-constraint>
-        <display-name>secured</display-name>
+        <display-name>securedManager</display-name>
         <web-resource-collection>
-            <web-resource-name>manager</web-resource-name>
+            <web-resource-name>accountA</web-resource-name>
             <description/>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>/ib/accountA.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>bank</web-resource-name>
+            <description/>
+            <url-pattern>/ib/bank.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>currency</web-resource-name>
+            <description/>
+            <url-pattern>/ib/currency.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>currencyRate</web-resource-name>
+            <description/>
+            <url-pattern>/ib/currencyRate.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>customerAD</web-resource-name>
+            <description/>
+            <url-pattern>/ib/customerAD.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>customerU</web-resource-name>
+            <description/>
+            <url-pattern>/ib/customerU.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>customerV</web-resource-name>
+            <description/>
+            <url-pattern>/ib/customerV.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
             <role-name>MANAGER</role-name>
-            <role-name>CUSTOMER</role-name>
         </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
     </security-constraint>
     <security-constraint>
         <display-name>unsecured</display-name>
@@ -42,12 +75,70 @@
             <url-pattern>/resources/*</url-pattern>
         </web-resource-collection>
     </security-constraint>
+    <security-constraint>
+        <display-name>securedCustomer</display-name>
+        <web-resource-collection>
+            <web-resource-name>transactionA</web-resource-name>
+            <description/>
+            <url-pattern>/ib/transactionA.xtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>fx</web-resource-name>
+            <description/>
+            <url-pattern>/ib/javafx/ib-web-calc.html</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>statement</web-resource-name>
+            <description/>
+            <url-pattern>/ib/statement.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>CUSTOMER</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>securedCustManag</display-name>
+        <web-resource-collection>
+            <web-resource-name>accountV</web-resource-name>
+            <description/>
+            <url-pattern>/ib/accountV.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>ibTemplate</web-resource-name>
+            <description/>
+            <url-pattern>/ib/ibTemplate.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>index</web-resource-name>
+            <description/>
+            <url-pattern>/ib/index.xhtml</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>transactionV</web-resource-name>
+            <description/>
+            <url-pattern>/ib/transactionV.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>MANAGER</role-name>
+            <role-name>CUSTOMER</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>ibSecurity</realm-name>
         <form-login-config>
             <form-login-page>/loginForm.html</form-login-page>
-            <form-error-page>/loginError.html</form-error-page>
+            <form-error-page>/loginForm.html</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>

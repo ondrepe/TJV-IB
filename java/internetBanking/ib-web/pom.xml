@@ -11,6 +11,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
+    <fx.home>e:\develop\school\tjv\TJV-IB\java\internetBanking\ib-web-calc\dist</fx.home>
   </properties>
 
   <dependencies>

@@ -7,6 +7,8 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IBankCodeBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.BankCode;
 import java.util.List;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -21,6 +23,7 @@ import javax.persistence.Query;
  * @author ondrepe
  */
 @Stateless
+@DeclareRoles({"MANAGER", "CUSTOMER"})
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class BankCodeBean implements IBankCodeBean {
 
@@ -28,6 +31,7 @@ public class BankCodeBean implements IBankCodeBean {
   private EntityManager em;
 
   @Override
+  @RolesAllowed({"MANAGER", "CUSTOMER"})
   public List<BankCode> getAll() {
     Query query = em.createNamedQuery("BankPO.findAll");
     return query.getResultList();
@@ -35,6 +39,7 @@ public class BankCodeBean implements IBankCodeBean {
 
   @Override
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+  @RolesAllowed({"MANAGER"})
   public void delete(int i) throws CommonIBException {
     BankPO bank = em.find(BankPO.class, i);
     em.remove(bank);
@@ -42,6 +47,7 @@ public class BankCodeBean implements IBankCodeBean {
 
   @Override
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+  @RolesAllowed({"MANAGER"})
   public void set(BankCode bc) throws CommonIBException {
     CommonSetCommand command = new BankSetCommand(em);
     command.set(bc);

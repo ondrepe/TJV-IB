@@ -26,6 +26,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
   @NamedQuery(name = "BankTransactionPO.findAll", query = "SELECT b FROM BankTransactionPO b"),
   @NamedQuery(name = "BankTransactionPO.findById", query = "SELECT b FROM BankTransactionPO b WHERE b.id = :id"),
+  @NamedQuery(name = "BankTransactionPO.findById2", query = "SELECT b FROM BankTransactionPO b WHERE b.accountTo.id = :id OR b.accountFrom.id = :id ORDER BY b.creationTime DESC"),
   @NamedQuery(name = "BankTransactionPO.findByAccountFrom", query = "SELECT b FROM BankTransactionPO b WHERE b.accountFrom = :accountFrom"),
   @NamedQuery(name = "BankTransactionPO.findByAccountTo", query = "SELECT b FROM BankTransactionPO b WHERE b.accountTo = :accountTo"),
   @NamedQuery(name = "BankTransactionPO.findByAmountFrom", query = "SELECT b FROM BankTransactionPO b WHERE b.amountFrom = :amountFrom"),

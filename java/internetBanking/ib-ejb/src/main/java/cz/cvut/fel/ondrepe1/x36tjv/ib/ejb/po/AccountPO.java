@@ -27,7 +27,7 @@ import javax.persistence.TableGenerator;
 @Entity
 @Table(name = "account")
 @NamedQueries({
-  @NamedQuery(name = "AccountPO.findByAccNum", query = "SELECT a FROM AccountPO a WHERE a.accountNumber = :accountNumber"),
+  @NamedQuery(name = "AccountPO.findByAccNum", query = "SELECT a FROM AccountPO a WHERE a.accountNumber = :accountNumber AND a.valid = :valid"),
   @NamedQuery(name = "AccountPO.getAccNums", query = "SELECT a.accountNumber FROM AccountPO a ORDER BY a.accountNumber DESC"),
   @NamedQuery(name = "AccountPO.findByValid", query = "SELECT a FROM AccountPO a WHERE a.valid = :valid")})
 public class AccountPO implements Serializable {

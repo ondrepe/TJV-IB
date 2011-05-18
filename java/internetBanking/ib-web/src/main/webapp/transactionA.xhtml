@@ -21,7 +21,7 @@
         <h:message for="accountTo" />
         Amount: <h:inputText id="amount" value="#{transactionA.item.ammountTo}" validator="#{accountA$BalanceValidator.validate}" />
         <h:message for="amount" />
-        Currency: <h:selectOneMenu id="currency" value="#{transactionA.item.currencyCode}">
+        Currency: <h:selectOneMenu id="currency" value="#{transactionA.item.currencyCodeTo}">
           <f:selectItems itemLabel="#{currency.code}" itemValue="#{currency.code}" var="currency" value="#{transactionA.currencies}" />
         </h:selectOneMenu>
         <h:message for="currency" />

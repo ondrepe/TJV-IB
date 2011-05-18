@@ -1,6 +1,6 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAutentizationBean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAuthentizationBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Customer;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 public class LoginInfoBean {
 
   @EJB
-  private IAutentizationBean autentizationBean;
+  private IAuthentizationBean autentizationBean;
   private boolean manager;
   private boolean customer;
   private String label;
@@ -66,7 +66,7 @@ public class LoginInfoBean {
 
   public String getName() {
     if(customer) {
-      Customer cstmr = autentizationBean.getCustomerByLogin(user);
+      Customer cstmr = autentizationBean.getLoggedCustomer();
       name = cstmr.getFirstName() + " " + cstmr.getLastName();
     }
     return name;

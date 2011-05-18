@@ -1,7 +1,7 @@
 package cz.cvut.fel.ondrepe1.x36tjv.exchangeoffice.ws;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
+import java.math.RoundingMode;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -53,8 +53,8 @@ public class EOResource {
     }
     BigDecimal fromRate = fromPo.getRate();
     BigDecimal toRate = toPo.getRate();
-    BigDecimal rate = fromRate.divide(toRate, new MathContext(4));
-    System.out.println("Rate " + from + " / " + to + " = " + rate.toPlainString());
+    BigDecimal rate = fromRate.divide(toRate, 10, RoundingMode.HALF_UP);
+    rate = rate.setScale(4, RoundingMode.HALF_UP);
     return rate;
   }
 }

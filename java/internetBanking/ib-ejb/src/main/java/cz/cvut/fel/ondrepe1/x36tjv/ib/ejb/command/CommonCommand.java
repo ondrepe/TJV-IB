@@ -1,5 +1,6 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command;
 
+import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 
 /**
@@ -9,8 +10,14 @@ import javax.persistence.EntityManager;
 public abstract class CommonCommand {
   
   protected EntityManager em;
+  protected SessionContext ctx;
 
   public CommonCommand(EntityManager em) {
     this.em = em;
+  }
+  
+  public CommonCommand(EntityManager em, SessionContext ctx) {
+    this.em = em;
+    this.ctx = ctx;
   }
 }

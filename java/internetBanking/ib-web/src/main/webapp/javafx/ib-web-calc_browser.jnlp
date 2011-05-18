@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="https://localhost:8181/ib-web/ib/javafx/" href="ib-web-calc_browser.jnlp">
+    <information>
+        <title>ib-web-calc</title>
+        <vendor>${application.vendor}</vendor>
+        <homepage href="https://localhost:8181/ib-web/ib/javafx/"/>
+        <description>ib-web-calc</description>
+        <icon kind="splash" href="http://dl.javafx.com/1.3/splash.png"/>
+        <offline-allowed/>
+    </information>
+    <resources>
+        <j2se version="1.5+"/>
+        <extension name="JavaFX Runtime" href="http://dl.javafx.com/1.3/javafx-rt.jnlp"/>
+        <jar href="ib-web-calc.jar" main="true" size="14702"/>
+    </resources>
+    <applet-desc name="ib-web-calc" main-class="com.sun.javafx.runtime.adapter.Applet" progress-class="com.javafx.progressbar.ProgressManager" width="540" height="120">
+        <param name="MainJavaFXScript" value="cz.cvut.fel.ondrepe1.x36tjv.ib.web.fx.Main"/>
+    </applet-desc>
+    <update check="always"/>
+</jnlp>

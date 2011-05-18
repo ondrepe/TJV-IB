@@ -10,6 +10,8 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Customer;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -24,6 +26,7 @@ import javax.persistence.Query;
  * @author ondrepe
  */
 @Stateless
+@DeclareRoles({"MANAGER", "CUSTOMER"})
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class CustomerBean implements ICustomerBean {
 
@@ -31,6 +34,7 @@ public class CustomerBean implements ICustomerBean {
   private EntityManager em;
   
   @Override
+  @RolesAllowed({"MANAGER"})
   public List<Customer> getList() {
     Query query = em.createNamedQuery("CustomerPO.findByValid").setParameter("valid", "Y");
     List<CustomerPO> list = query.getResultList();
@@ -47,6 +51,7 @@ public class CustomerBean implements ICustomerBean {
   }
 
   @Override
+  @RolesAllowed({"MANAGER"})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void set(Customer cstmr) throws CommonIBException {
     CommonSetCommand command = new CustomerSetCommand(em);
@@ -54,6 +59,7 @@ public class CustomerBean implements ICustomerBean {
   }
 
   @Override
+  @RolesAllowed({"MANAGER"})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(int i) throws CommonIBException {
     CommonDeleteCommand command = new CustomerDeleteCommand(em);

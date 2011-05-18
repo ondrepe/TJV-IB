@@ -16,9 +16,8 @@
   <h:body>       
     <div id="top" class="top">
       <ui:insert name="top">
-        #{loginInfoBean.name} 
         <h:form>
-          <h:commandButton value="Logout" action="#{loginInfoBean.logout}"/>
+          #{loginInfoBean.name} <h:commandButton value="Logout" action="#{loginInfoBean.logout}"/>
         </h:form>
       </ui:insert>
     </div>
@@ -38,11 +37,10 @@
               <li><h:link outcome="transactionV.xhtml">View All Transactions</h:link></li>
             </c:if>
             <c:if test="#{loginInfoBean.customer}">
-              <li><h:link outcome="transactionV.xhtml">View Accounts</h:link></li>
-              <li><h:link outcome="transactionV.xhtml">View Transactions</h:link></li>
+              <li><h:link outcome="accountV.xhtml">View Accounts</h:link></li>
               <li><h:link outcome="transactionA.xhtml">Transfer Money</h:link></li>
-              <li><h:link outcome="transactionV.xhtml">Send Statement</h:link></li>
-              <li><h:link outcome="transactionV.xhtml">Convert Money</h:link></li>
+              <li><h:link outcome="statement.xhtml">Send Statement</h:link></li>
+              <li><h:link outcome="javafx/ib-web-calc.html">Convert Money</h:link></li>
             </c:if>
           </ul>
         </ui:insert>

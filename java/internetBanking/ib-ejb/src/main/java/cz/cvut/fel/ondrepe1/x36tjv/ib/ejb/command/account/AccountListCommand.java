@@ -1,10 +1,13 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.account;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.customer.CustomerGetLoggedCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -14,15 +17,24 @@ import javax.persistence.Query;
  */
 public class AccountListCommand extends CommonListCommand<Account, AccountPO> {
 
-  public AccountListCommand(EntityManager em) {
-    super(em);
+  public AccountListCommand(EntityManager em, SessionContext ctx) {
+    super(em, ctx);
   }
 
   @Override
   protected List<AccountPO> execute() {
-    Query query = em.createNamedQuery("AccountPO.findByValid");
-    query.setParameter("valid", "Y");
-    return query.getResultList();
+    List<AccountPO> list;
+    CustomerGetLoggedCommand command = new CustomerGetLoggedCommand(em, ctx);
+    CustomerPO custPo = command.getLoggedCustomerPO();
+
+    if(custPo != null) {
+      list = custPo.getAccounts();
+    } else {
+      Query query = em.createNamedQuery("AccountPO.findByValid");
+      query.setParameter("valid", "Y");
+      list = query.getResultList();
+    }
+    return list;
   }
 
   @Override

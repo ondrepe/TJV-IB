@@ -18,7 +18,7 @@ import javax.faces.validator.ValidatorException;
 public class CurrencyRateADL$RateValidator implements Validator {
 
   private static final String MANDATORY = "Rate is mandatory!";
-  private static final String BAD_VALUE = "The rate must be nonnegative with more than two digits after the decimal point!";
+  private static final String BAD_VALUE = "The rate must be nonnegative with a maximum of two digits after the decimal point!";
 
   
   @Override

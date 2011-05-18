@@ -7,7 +7,7 @@ import javax.ejb.Local;
  * @author ondrepe
  */
 @Local
-public interface IStatement {
+public interface IStatementBean {
   
   public void sendStatement(Integer idAccount);
 }

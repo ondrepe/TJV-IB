@@ -1,33 +1,37 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.customer.CustomerGetLoggedCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAutentizationBean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAuthentizationBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Customer;
+import javax.annotation.Resource;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
  * @author ondrepe
  */
 @Stateless
+@DeclareRoles({"MANAGER", "CUSTOMER"})
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class AutentizationBean implements IAutentizationBean {
+public class AutentizationBean implements IAuthentizationBean {
 
   @PersistenceContext
   private EntityManager em;
-  
+  @Resource
+  private SessionContext ctx;
+
   @Override
-  public Customer getCustomerByLogin(String string) {
-    Query query = em.createNamedQuery("AutentizationPO.getCustomerByLogin");
-    query.setParameter("login", string);
-    CustomerPO cPo = (CustomerPO) query.getSingleResult();  
-    Customer cust = new Customer(cPo.getId(), cPo.getFirstName(), cPo.getLastName(), cPo.getEmail());
-    return cust;
+  @RolesAllowed({"CUSTOMER"})
+  public Customer getLoggedCustomer() {
+    CustomerGetLoggedCommand command = new CustomerGetLoggedCommand(em, ctx);
+    return command.getLoggedCustomer();
   }
-  
 }

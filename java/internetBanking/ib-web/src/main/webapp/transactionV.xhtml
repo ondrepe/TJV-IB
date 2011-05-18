@@ -6,18 +6,35 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
   <ui:define name="content">
-    <h:dataTable var="account" value="#{accountCustomerV.list}">
+   
+    <h:dataTable var="transaction" value="#{transactionV.list}">
       <h:column>
         <f:facet name="header">Id</f:facet>
-        #{account.id}
+        #{transaction.id}
       </h:column>
       <h:column>
-        <f:facet name="header">Currency</f:facet>
-        #{account.currencyCode}
+        <f:facet name="header">Account from</f:facet>
+        #{transaction.accountFrom}/#{transaction.bankFrom}
       </h:column>
       <h:column>
-        <f:facet name="header">Balance</f:facet>
-        #{account.balance}
+        <f:facet name="header">Amount from</f:facet>
+        #{transaction.ammountFrom} #{transaction.currencyCodeFrom}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Account to</f:facet>
+        #{transaction.accountTo}/#{transaction.bankTo}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Amount to</f:facet>
+        #{transaction.ammountTo} #{transaction.currencyCodeTo}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Description</f:facet>
+        #{transaction.description}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Transaction date &amp; time</f:facet>
+        #{transaction.transactionTime}
       </h:column>
     </h:dataTable>
 

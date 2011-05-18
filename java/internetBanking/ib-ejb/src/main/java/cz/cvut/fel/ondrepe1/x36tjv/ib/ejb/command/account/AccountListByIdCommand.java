@@ -25,8 +25,8 @@ public class AccountListByIdCommand extends CommonListByIdCommand<Account, Accou
   }
 
   @Override
-  protected List<Account> convert(List<AccountPO> listPo) {
-    List<Account> list = new ArrayList<Account>();
+  protected ArrayList<Account> convert(List<AccountPO> listPo) {
+    ArrayList<Account> list = new ArrayList<Account>();
     for(AccountPO accPO : listPo) {
       Account acc = new Account();
       acc.setId(accPO.getId());

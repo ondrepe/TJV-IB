@@ -7,8 +7,9 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrentCurrencyRatePO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICurrencyRateBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CurrencyRate;
-import java.math.BigDecimal;
 import java.util.List;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -23,6 +24,7 @@ import javax.persistence.Query;
  * @author ondrepe
  */
 @Stateless
+@DeclareRoles({"MANAGER", "CUSTOMER"})
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class CurrencyRateBean implements ICurrencyRateBean {
 
@@ -30,12 +32,14 @@ public class CurrencyRateBean implements ICurrencyRateBean {
   private EntityManager em;
   
   @Override
+  @RolesAllowed({"MANAGER"})
   public List<CurrencyRate> getAll() {
     Query query = em.createNamedQuery("CurrentCurrencyRatePO.findAll");
     return query.getResultList();
   }
 
   @Override
+  @RolesAllowed({"MANAGER"})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(String string) throws CommonIBException {
     CurrentCurrencyRatePO ccRate = em.find(CurrentCurrencyRatePO.class, string);
@@ -45,6 +49,7 @@ public class CurrencyRateBean implements ICurrencyRateBean {
   }
 
   @Override
+  @RolesAllowed({"MANAGER"})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void set(CurrencyRate cr) throws CommonIBException {
     CommonSetCommand command = new CurrencyRateSetCommand(em);

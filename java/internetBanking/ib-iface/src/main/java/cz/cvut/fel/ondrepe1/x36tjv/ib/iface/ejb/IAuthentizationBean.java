@@ -8,7 +8,7 @@ import javax.ejb.Local;
  * @author ondrepe
  */
 @Local
-public interface IAutentizationBean {
+public interface IAuthentizationBean {
   
-  public Customer getCustomerByLogin(String login);
+  public Customer getLoggedCustomer();
 }

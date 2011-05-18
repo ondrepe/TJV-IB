@@ -52,6 +52,7 @@ public class CustomerSetCommand extends CommonSetCommand<Customer> {
       
       cust = new CustomerPO();
       cust.setAutentization(aPo);
+      aPo.setCustomer(cust);
     } else {
       cust = em.find(CustomerPO.class, cstmr.getId());
     }
