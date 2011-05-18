@@ -65,6 +65,7 @@ CREATE  TABLE IF NOT EXISTS `internetbanking`.`account` (
   `code` VARCHAR(3) NOT NULL ,
   `balance` DECIMAL(20,2) NOT NULL ,
   `valid` VARCHAR(1) NOT NULL DEFAULT 'Y' ,
+  `lowestDailyBalance` DECIMAL(20,2) NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_Account_Currency` (`code` ASC) ,
   CONSTRAINT `fk_Account_Currency`
@@ -199,6 +200,7 @@ CREATE  TABLE IF NOT EXISTS `internetbanking`.`autentization` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_autentization_customer1` (`idCustomer` ASC) ,
   INDEX `fk_autentization_autentizationgroup1` (`groupName` ASC) ,
+  UNIQUE INDEX `login_UNIQUE` (`login` ASC) ,
   CONSTRAINT `fk_autentization_customer1`
     FOREIGN KEY (`idCustomer` )
     REFERENCES `internetbanking`.`customer` (`id` )

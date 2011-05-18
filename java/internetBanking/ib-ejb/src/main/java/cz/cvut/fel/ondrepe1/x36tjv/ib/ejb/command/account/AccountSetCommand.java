@@ -32,6 +32,7 @@ public class AccountSetCommand extends CommonSetCommand<Account> {
     
     AccountPO accPo = new AccountPO();
     accPo.setBalance(acc.getBalance());
+    accPo.setLowestDailyBalance(acc.getBalance());
     accPo.setAccountNumber(createAccountNumber());
     accPo.setCurrency(crPo);
     accPo.setValid("Y");

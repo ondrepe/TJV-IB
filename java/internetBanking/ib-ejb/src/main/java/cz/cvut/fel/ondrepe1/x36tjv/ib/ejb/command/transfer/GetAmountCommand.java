@@ -20,8 +20,8 @@ public class GetAmountCommand extends CommonCommand {
     super(em);
   }
   
-  public BigDecimal getAmount(AccountPO acc, CurrencyPO curr, BigDecimal amount, GetAmountEnum direction) throws CommonIBException {
-    boolean isInput = GetAmountEnum.INPUT.equals(direction);
+  public BigDecimal getAmount(AccountPO acc, CurrencyPO curr, BigDecimal amount, TransferEnum direction) throws CommonIBException {
+    boolean isInput = TransferEnum.INPUT.equals(direction);
     BigDecimal amountResult = BigDecimal.ZERO;
     CurrencyPO accCur = acc.getCurrency();
     

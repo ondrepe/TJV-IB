@@ -49,6 +49,9 @@ public class AccountPO implements Serializable {
   @Column(name = "valid")
   private String valid;
   
+  @Column(name = "lowestDailyBalance")
+  private BigDecimal lowestDailyBalance;
+  
   @JoinColumn(name = "code", referencedColumnName = "code")
   @ManyToOne(optional = false)
   private CurrencyPO currency;
@@ -64,11 +67,12 @@ public class AccountPO implements Serializable {
     this.id = id;
   }
 
-  public AccountPO(Integer id, String accountNumber, BigDecimal balance, String valid) {
+  public AccountPO(Integer id, String accountNumber, BigDecimal balance, String valid, BigDecimal lowestDailyBalance) {
     this.id = id;
     this.accountNumber = accountNumber;
     this.balance = balance;
     this.valid = valid;
+    this.lowestDailyBalance = lowestDailyBalance;
   }
 
   public Integer getId() {
@@ -93,6 +97,14 @@ public class AccountPO implements Serializable {
 
   public void setBalance(BigDecimal balance) {
     this.balance = balance;
+  }
+
+  public BigDecimal getLowestDailyBalance() {
+    return lowestDailyBalance;
+  }
+
+  public void setLowestDailyBalance(BigDecimal lowestDailyBalance) {
+    this.lowestDailyBalance = lowestDailyBalance;
   }
 
   public String getValid() {

@@ -2,8 +2,8 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transaction;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.GlobalParamCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transfer.GetAmountCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transfer.GetAmountEnum;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transfer.AccountTransferMoneyCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transfer.TransferEnum;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankTransactionPO;
@@ -13,7 +13,6 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.ValidationIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Transaction;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Date;
 import javax.persistence.EntityManager;
@@ -38,7 +37,7 @@ public class TransactionTransferMoneyCommand extends CommonSetCommand<Transactio
 
   @Override
   public void execute(Transaction trn) throws CommonIBException {
-    GetAmountCommand cbCommand = new GetAmountCommand(em);
+    AccountTransferMoneyCommand trCommand = new AccountTransferMoneyCommand(em);
 
     BankTransactionPO trPo = new BankTransactionPO();
     trPo.setAccountFrom(accountFrom);
@@ -47,86 +46,69 @@ public class TransactionTransferMoneyCommand extends CommonSetCommand<Transactio
     trPo.setCreationTime(new Date());
     trPo.setCurrencyFrom(accountFrom.getCurrency());
     trPo.setDescription(trn.getDescription());
-    
-    BigDecimal amountFrom = cbCommand.getAmount(accountFrom, curr, trn.getAmmountTo(), GetAmountEnum.OUTPUT);
-    trPo.setAmountFrom(amountFrom);
-    
-    BigDecimal actualBalance = accountFrom.getBalance().add(trPo.getAmountFrom(), new MathContext(24, RoundingMode.HALF_UP));
-    actualBalance = actualBalance.setScale(accountFrom.getCurrency().getDecimalDigits(), RoundingMode.HALF_UP);
-    
-    if(actualBalance.doubleValue() < 0) {
-      throw new ValidationIBException("AccountFrom does not have enough money!");
-    }
-    accountFrom.setBalance(actualBalance);
-    
+    trPo.setAmountTo(trn.getAmmountTo());
+    trPo.setCurrencyTo(curr);
+
     if (mypay) {
       trPo.setBankTo(bankFrom);
       trPo.setAccountTo(accountTo);
       trPo.setAccountNumberTo(accountTo.getAccountNumber());
-      trPo.setCurrencyTo(accountTo.getCurrency());
-      
-      BigDecimal amountTo = cbCommand.getAmount(accountTo, curr, trn.getAmmountTo(), GetAmountEnum.INPUT);
-      trPo.setAmountTo(amountTo);
-      
-      BigDecimal newBalance = accountTo.getBalance().add(trPo.getAmountTo(), new MathContext(24, RoundingMode.HALF_UP));
-      newBalance = newBalance.setScale(accountTo.getCurrency().getDecimalDigits(), RoundingMode.HALF_UP);
-      accountTo.setBalance(newBalance);
     } else {
       trPo.setBankTo(bankTo);
       trPo.setAccountNumberTo(trn.getAccountTo());
-      trPo.setAmountTo(trn.getAmmountTo());
-      trPo.setCurrencyTo(curr);
-      
+    }
+
+    BigDecimal amountFrom = trCommand.transferMoney(accountFrom, trn.getAmmountTo(), curr, TransferEnum.OUTPUT);
+    trPo.setAmountFrom(amountFrom);
+    em.persist(trPo);
+    if (mypay) {
+      trCommand.transferMoney(accountTo, trn.getAmmountTo(), curr, TransferEnum.INPUT);
+    } else {
       CentralBankClient cbClient = new CentralBankClient(em);
       cbClient.transfer(trPo);
-    }
-    em.persist(trPo);
-    em.persist(accountFrom);
-    if (mypay) {
-      em.persist(accountTo);
     }
   }
 
   @Override
   protected void validate(Transaction object) throws CommonIBException {
-    
-    if(object != null) {
+
+    if (object != null) {
       // validace account from
-      if(object.getAccountFrom() == null || object.getAccountFrom().trim().isEmpty()) {
+      if (object.getAccountFrom() == null || object.getAccountFrom().trim().isEmpty()) {
         throw new ValidationIBException("AccountFrom is not seted!");
       } else {
         object.setAccountFrom(object.getAccountFrom().trim());
       }
       // validace account to
-      if(object.getAccountTo() == null || object.getAccountTo().trim().isEmpty()) {
+      if (object.getAccountTo() == null || object.getAccountTo().trim().isEmpty()) {
         throw new ValidationIBException("AccountTo is not seted!");
       } else {
         object.setAccountTo(object.getAccountTo().trim());
       }
       // validace bank to
-      if(object.getBankTo() == null) {
+      if (object.getBankTo() == null) {
         throw new ValidationIBException("BankTo is not seted!");
       }
       // validace account to
-      if(object.getCurrencyCodeTo() == null || object.getCurrencyCodeTo().trim().isEmpty()) {
+      if (object.getCurrencyCodeTo() == null || object.getCurrencyCodeTo().trim().isEmpty()) {
         throw new ValidationIBException("AccountTo is not seted!");
       } else {
         object.setCurrencyCodeTo(object.getCurrencyCodeTo().trim());
         curr = em.find(CurrencyPO.class, object.getCurrencyCodeTo());
-        if(curr == null) {
+        if (curr == null) {
           throw new ValidationIBException("Currency " + object.getCurrencyCodeTo() + " does not exist!");
         }
       }
       // validace bank to
-      if(object.getAmmountTo() == null) {
+      if (object.getAmmountTo() == null) {
         throw new ValidationIBException("Ammount is not seted!");
-      } else if(object.getAmmountTo().setScale(curr.getDecimalDigits(), RoundingMode.HALF_UP).doubleValue() <= 0) {
+      } else if (object.getAmmountTo().setScale(curr.getDecimalDigits(), RoundingMode.HALF_UP).doubleValue() <= 0) {
         throw new ValidationIBException("Ammount is less or equal 0!");
       } else {
         object.setAmmountTo(object.getAmmountTo().setScale(4, RoundingMode.HALF_UP));
       }
-      
-      if(object.getTransactionTime() == null) {
+
+      if (object.getTransactionTime() == null) {
         object.setTransactionTime(new Date());
       }
     } else {
@@ -134,7 +116,7 @@ public class TransactionTransferMoneyCommand extends CommonSetCommand<Transactio
     }
     this.initData(object);
   }
-  
+
   /**
    * Inicializace tridnich promennych.
    * 
@@ -151,7 +133,7 @@ public class TransactionTransferMoneyCommand extends CommonSetCommand<Transactio
     } else {
       mypay = false;
     }
-    
+
     this.setBankTo(mypay, object);
   }
 
@@ -213,7 +195,7 @@ public class TransactionTransferMoneyCommand extends CommonSetCommand<Transactio
    * @throws CommonIBException banka neexistuje
    */
   private void setBankTo(boolean mypay, Transaction object) throws CommonIBException {
-    if (mypay) {
+    if (!mypay) {
       bankTo = em.find(BankPO.class, object.getBankTo());
       if (bankTo == null) {
         throw new ValidationIBException("Bank " + object.getBankTo() + " does not exist!");

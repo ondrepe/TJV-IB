@@ -76,8 +76,9 @@ public class LoginInfoBean {
     this.name = name;
   }
 
-  public void logout() {
+  public String logout() {
     HttpSession sess = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
     sess.invalidate();
+    return "logout";
   }
 }
