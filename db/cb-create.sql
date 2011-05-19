@@ -2,13 +2,13 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS `CentralBankDB` DEFAULT CHARACTER SET utf8 COLLATE utf8_czech_ci ;
-USE `CentralBankDB` ;
+CREATE SCHEMA IF NOT EXISTS `centralbankdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_czech_ci ;
+USE `centralbankdb` ;
 
 -- -----------------------------------------------------
--- Table `CentralBankDB`.`transfer`
+-- Table `centralbankdb`.`transfer`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `CentralBankDB`.`transfer` (
+CREATE  TABLE IF NOT EXISTS `centralbankdb`.`transfer` (
   `idTransfer` INT NOT NULL ,
   `bankFrom` VARCHAR(45) NOT NULL ,
   `accountFrom` VARCHAR(250) NOT NULL ,
@@ -25,9 +25,9 @@ COLLATE = utf8_czech_ci;
 
 
 -- -----------------------------------------------------
--- Table `CentralBankDB`.`idtable`
+-- Table `centralbankdb`.`idtable`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `CentralBankDB`.`idtable` (
+CREATE  TABLE IF NOT EXISTS `centralbankdb`.`idtable` (
   `name` VARCHAR(50) NOT NULL ,
   `val` INT NOT NULL ,
   PRIMARY KEY (`name`) )
@@ -40,10 +40,10 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `CentralBankDB`.`idtable`
+-- Data for table `centralbankdb`.`idtable`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-USE `CentralBankDB`;
-INSERT INTO `CentralBankDB`.`idtable` (`name`, `val`) VALUES ('transaction', 10000);
+USE `centralbankdb`;
+INSERT INTO `centralbankdb`.`idtable` (`name`, `val`) VALUES ('transaction', 10000);
 
 COMMIT;
