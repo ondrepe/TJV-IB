@@ -1,40 +1,25 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Cache;
 
 /**
  *
  * @author ondrepe
  */
 @Entity
+@Cache(alwaysRefresh=true)
 @Table(name = "autentization")
-@XmlRootElement
-@NamedQueries({
-  @NamedQuery(name = "AutentizationPO.findAll", query = "SELECT a FROM AutentizationPO a"),
-  @NamedQuery(name = "AutentizationPO.findById", query = "SELECT a FROM AutentizationPO a WHERE a.id = :id"),
-  @NamedQuery(name = "AutentizationPO.findByLogin", query = "SELECT a FROM AutentizationPO a WHERE a.login = :login"),
-  @NamedQuery(name = "AutentizationPO.getCustomerByLogin", query = "SELECT a.customer FROM AutentizationPO a WHERE a.login = :login"),
-  @NamedQuery(name = "AutentizationPO.findByPassword", query = "SELECT a FROM AutentizationPO a WHERE a.password = :password")})
-public class AutentizationPO implements Serializable {
+public class AutentizationPO extends CommonPO {
   
   private static final long serialVersionUID = 1L;
   
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
-  
   @Column(name = "login")
   private String login;
   
@@ -52,22 +37,13 @@ public class AutentizationPO implements Serializable {
   public AutentizationPO() {
   }
 
-  public AutentizationPO(Integer id) {
-    this.id = id;
+  public AutentizationPO(String login) {
+    this.login = login;
   }
 
-  public AutentizationPO(Integer id, String login, String password) {
-    this.id = id;
+  public AutentizationPO(String login, String password) {
     this.login = login;
     this.password = password;
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
   }
 
   public String getLogin() {

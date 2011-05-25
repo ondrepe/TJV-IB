@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  *
  * @author ondrepe
  */
-public class Account extends AbstractIFaceObject {
+public class Account extends CommonTO {
   
   private Integer id;
   private Integer customerId;

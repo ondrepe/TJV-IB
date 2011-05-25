@@ -22,8 +22,7 @@ CREATE  TABLE IF NOT EXISTS `internetbanking`.`currency` (
   `code` VARCHAR(3) NOT NULL ,
   `name` VARCHAR(250) NOT NULL ,
   `decimalDigits` INT NOT NULL ,
-  PRIMARY KEY (`code`) ,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
+  PRIMARY KEY (`code`) )
 ENGINE = InnoDB;
 
 
@@ -192,12 +191,11 @@ ENGINE = InnoDB;
 -- Table `internetbanking`.`autentization`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `internetbanking`.`autentization` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
   `login` VARCHAR(45) NOT NULL ,
   `password` VARCHAR(45) NOT NULL ,
   `groupName` VARCHAR(20) NOT NULL ,
   `idCustomer` INT NULL ,
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`login`) ,
   INDEX `fk_autentization_customer1` (`idCustomer` ASC) ,
   INDEX `fk_autentization_autentizationgroup1` (`groupName` ASC) ,
   UNIQUE INDEX `login_UNIQUE` (`login` ASC) ,
@@ -265,7 +263,7 @@ COMMIT;
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
 USE `internetbanking`;
-INSERT INTO `internetbanking`.`autentization` (`id`, `login`, `password`, `groupName`, `idCustomer`) VALUES (1, 'karel', '2cd324f30dc548396570da4e637c53ee', 'MANAGER', NULL);
+INSERT INTO `internetbanking`.`autentization` (`login`, `password`, `groupName`, `idCustomer`) VALUES ('karel', '2cd324f30dc548396570da4e637c53ee', 'MANAGER', NULL);
 
 COMMIT;
 

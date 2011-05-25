@@ -6,33 +6,33 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
   <ui:define name="content">
-    <h:dataTable var="bank" value="#{bankADL.list}">
+    <h:dataTable var="bankCode" value="#{bankBean.list}" rendered="#{bankBean.renderList}">
       <h:column>
-        <f:facet name="header">code</f:facet>
-        #{bank.code}
+        <f:facet name="header">Code</f:facet>
+        #{bankCode.code}
       </h:column>
       <h:column>
-        <f:facet name="header">name</f:facet>
-        #{bank.name}
+        <f:facet name="header">Name</f:facet>
+        #{bankCode.name}
       </h:column>
     </h:dataTable>
 
     <h:form>
       <h:panelGrid columns="3">
-        Code: <h:inputText id="code" value="#{bankADL.item.code}" validator="#{bankADL$CodeValidator.validate}" />
+        Code: <h:inputText id="code" value="#{bankBean.item.code}" validator="#{bankCodeValidator.validate}" />
         <h:message for="code" />
-        Name: <h:inputText id="name" value="#{bankADL.item.name}" validator="#{bankADL$NameValidator.validate}" />
+        Name: <h:inputText id="name" value="#{bankBean.item.name}" validator="#{bankNameValidator.validate}" />
         <h:message for="name" />
-        <h:commandButton value="Update" action="#{bankADL.add}" />
+        <h:commandButton value="Update" action="#{bankBean.add}" />
       </h:panelGrid>
     </h:form>
 
-    <h:form>
+    <h:form rendered="#{bankBean.renderDelete}">
       <h:panelGrid columns="2">
-        <h:selectOneMenu value="#{bankADL.selectedItem}">
-          <f:selectItems itemLabel="#{bank.name}" itemValue="#{bank.code}" var="bank" value="#{bankADL.list}" />
+        <h:selectOneMenu value="#{bankBean.selectedItem}">
+          <f:selectItems itemLabel="#{bankCode.name}" itemValue="#{bankCode.code}" var="bankCode" value="#{bankBean.listWithoutMyBank}" />
         </h:selectOneMenu>
-        <h:commandButton value="Delete" action="#{bankADL.delete}" />
+        <h:commandButton value="Delete" action="#{bankBean.delete}" />
       </h:panelGrid>
     </h:form>
   </ui:define>

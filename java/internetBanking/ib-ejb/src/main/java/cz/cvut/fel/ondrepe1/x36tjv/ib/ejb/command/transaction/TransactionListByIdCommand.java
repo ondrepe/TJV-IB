@@ -1,6 +1,6 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transaction;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListByIdCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListByIdCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.authorization.AuthorizationAccountCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.authorization.IAuthorization;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankTransactionPO;
@@ -17,18 +17,18 @@ import javax.persistence.Query;
  *
  * @author ondrepe
  */
-public class TransactionListByIdCommand extends CommonListByIdCommand<Transaction, BankTransactionPO> {
+public class TransactionListByIdCommand extends ListByIdCommand<BankTransactionPO, Transaction> {
 
   public TransactionListByIdCommand(EntityManager em, SessionContext ctx) {
     super(em, ctx);
   }
 
   @Override
-  protected List<BankTransactionPO> execute(int id) {
+  protected List<BankTransactionPO> list(int id) {
     List<BankTransactionPO> list = null;
     boolean isAuthorized = false;
     IAuthorization command = new AuthorizationAccountCommand(em, ctx);
-    isAuthorized = ctx.isCallerInRole("MANAGER") ? true : command.authorize(id);
+    isAuthorized = isManager() ? true : command.authorize(id);
     
     if (isAuthorized) {
       Query query = em.createNamedQuery("BankTransactionPO.findById2");
@@ -62,5 +62,10 @@ public class TransactionListByIdCommand extends CommonListByIdCommand<Transactio
     }
 
     return trList;
+  }
+
+  @Override
+  protected boolean authorize() {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }

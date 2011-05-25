@@ -7,7 +7,7 @@
 
   <ui:define name="content">
     
-    <h:dataTable var="customer" value="#{customerV.list}">
+    <h:dataTable var="customer" value="#{customerListBean.list}" rendered="#{customerListBean.renderList}"  binding="#{customerListBean.htmlDataTable}">
       <h:column>
         <f:facet name="header">Id</f:facet>
         #{customer.id}

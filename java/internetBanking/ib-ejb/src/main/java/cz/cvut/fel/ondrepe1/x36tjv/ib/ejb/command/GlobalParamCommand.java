@@ -21,4 +21,9 @@ public class GlobalParamCommand extends CommonCommand {
     Integer intParam = Integer.parseInt(param.getValue());
     return intParam;
   }
+
+  @Override
+  protected boolean authorize() {
+    return true;
+  }
 }

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  *
  * @author ondrepe
  */
-public class CurrencyRate extends AbstractIFaceObject {
+public class CurrencyRate extends CommonTO {
   
   private String code;
   private BigDecimal rate;

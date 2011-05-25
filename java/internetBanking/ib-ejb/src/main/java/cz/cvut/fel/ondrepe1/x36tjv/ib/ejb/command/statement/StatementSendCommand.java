@@ -1,9 +1,9 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.statement;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.customer.CustomerGetLoggedCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transaction.TransactionListByIdCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.translator.impl.CustomerTranslator;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Customer;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Statement;
@@ -37,9 +37,9 @@ public class StatementSendCommand extends CommonCommand {
   public void sendTransactionsToQueue(int idAccount) {
     
     TransactionListByIdCommand trCommand = new TransactionListByIdCommand(em, ctx);
-    CustomerGetLoggedCommand cuCommand = new CustomerGetLoggedCommand(em, ctx);
-    ArrayList<Transaction> transactions = trCommand.listById(idAccount);
-    Customer customer = cuCommand.getLoggedCustomer();
+    ArrayList<Transaction> transactions = (ArrayList<Transaction>) trCommand.execute(idAccount);
+    CustomerTranslator translator = new CustomerTranslator();
+    Customer customer = translator.translate(getCustomer());
     Account account = getAccount(idAccount);
     
     try {
@@ -81,6 +81,11 @@ public class StatementSendCommand extends CommonCommand {
     acc.setCurrencyCode(accPo.getCurrency().getCode());
     acc.setId(idAcc);
     return acc;
+  }
+
+  @Override
+  protected boolean authorize() {
+    return true;
   }
   
 }

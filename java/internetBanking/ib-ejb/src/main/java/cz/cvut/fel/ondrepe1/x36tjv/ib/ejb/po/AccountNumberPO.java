@@ -1,18 +1,19 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.eclipse.persistence.annotations.Cache;
 
 /**
  *
  * @author ondrepe
  */
 @Entity
+@Cache(alwaysRefresh=true)
 @Table(name = "idtable")
-public class AccountNumberPO implements Serializable {
+public class AccountNumberPO extends CommonPO {
   
   @Id
   @Column(name = "name")

@@ -2,7 +2,7 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.transaction;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ITransactionBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Transaction;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.LBean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.CommonListBean;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class TransactionV extends LBean<Transaction> {
+public class TransactionV extends CommonListBean<Transaction> {
 
   @EJB
   private ITransactionBean transactionBean;

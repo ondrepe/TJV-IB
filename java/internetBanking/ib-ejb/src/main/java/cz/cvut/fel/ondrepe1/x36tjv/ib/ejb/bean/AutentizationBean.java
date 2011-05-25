@@ -1,6 +1,7 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.customer.CustomerGetLoggedCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.GetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.customer.CustomerGetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAuthentizationBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Customer;
@@ -25,13 +26,14 @@ public class AutentizationBean implements IAuthentizationBean {
 
   @PersistenceContext
   private EntityManager em;
+  
   @Resource
   private SessionContext ctx;
 
   @Override
   @RolesAllowed({"CUSTOMER"})
   public Customer getLoggedCustomer() {
-    CustomerGetLoggedCommand command = new CustomerGetLoggedCommand(em, ctx);
-    return command.getLoggedCustomer();
+    GetCommand<CustomerPO, Customer> command = new CustomerGetCommand(em, ctx);
+    return command.execute(-1);
   }
 }

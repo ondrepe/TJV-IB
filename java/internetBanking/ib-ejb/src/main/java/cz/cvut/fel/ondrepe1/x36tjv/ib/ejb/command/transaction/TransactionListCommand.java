@@ -1,12 +1,13 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transaction;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankTransactionPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Transaction;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -14,14 +15,14 @@ import javax.persistence.Query;
  *
  * @author ondrepe
  */
-public class TransactionListCommand extends CommonListCommand<Transaction, BankTransactionPO> {
+public class TransactionListCommand extends ListCommand<BankTransactionPO, Transaction> {
 
-  public TransactionListCommand(EntityManager em) {
-    super(em);
+  public TransactionListCommand(EntityManager em, SessionContext ctx) {
+    super(em, ctx);
   }
 
   @Override
-  protected List<BankTransactionPO> execute() {
+  protected List<BankTransactionPO> list() {
     Query query = em.createNamedQuery("BankTransactionPO.findAll");
     return query.getResultList();
   }
@@ -49,6 +50,11 @@ public class TransactionListCommand extends CommonListCommand<Transaction, BankT
     }
     
     return trList;
+  }
+
+  @Override
+  protected boolean authorize() {
+    return isManager();
   }
   
 }

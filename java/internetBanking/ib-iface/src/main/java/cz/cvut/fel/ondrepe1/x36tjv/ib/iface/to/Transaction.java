@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author ondrepe
  */
-public class Transaction extends AbstractIFaceObject {
+public class Transaction extends CommonTO {
   
   private Integer id;
   private String accountFrom;

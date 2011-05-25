@@ -1,6 +1,5 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.BankCode;
 import java.util.List;
 import javax.ejb.Local;
@@ -12,7 +11,8 @@ import javax.ejb.Local;
 @Local
 public interface IBankCodeBean {
   
-  public List<BankCode> getAll();
-  public void delete(int code) throws CommonIBException;
-  public void set(BankCode bankCode) throws CommonIBException;
+  public List<BankCode> getList();
+  public List<BankCode> getListWithoutMyBank();
+  public void delete(int code);
+  public void set(BankCode bankCode);
 }

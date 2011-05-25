@@ -1,6 +1,5 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,20 +7,23 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import org.eclipse.persistence.annotations.Cache;
 
 /**
  *
  * @author ondrepe
  */
 @Entity
+@Cache(alwaysRefresh=true)
 @Table(name = "currency")
 @NamedQueries({
   @NamedQuery(name = "CurrencyPO.findAll", query = "SELECT c FROM CurrencyPO c"),
+  @NamedQuery(name = "CurrencyPO.findByCodeAndName", query = "SELECT c FROM CurrencyPO c WHERE c.code = :code AND c.name = :name"),
   @NamedQuery(name = "CurrencyPO.findByCode", query = "SELECT c FROM CurrencyPO c WHERE c.code = :code"),
   @NamedQuery(name = "CurrencyPO.findByCodeAndNameAndDD", query = "SELECT c FROM CurrencyPO c WHERE c.code = :code AND c.name = :name AND c.decimalDigits = :decimalDigits"),
   @NamedQuery(name = "CurrencyPO.findByName", query = "SELECT c FROM CurrencyPO c WHERE c.name = :name"),
   @NamedQuery(name = "CurrencyPO.findByDecimalDigits", query = "SELECT c FROM CurrencyPO c WHERE c.decimalDigits = :decimalDigits")})
-public class CurrencyPO implements Serializable {
+public class CurrencyPO extends CommonPO {
 
   private static final long serialVersionUID = 1L;
   

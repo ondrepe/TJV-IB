@@ -1,24 +1,26 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.eclipse.persistence.annotations.Cache;
 
 /**
  *
  * @author ondrepe
  */
 @Entity
+@Cache(alwaysRefresh=true)
 @Table(name = "bank")
 @NamedQueries({
   @NamedQuery(name = "BankPO.findAll", query = "SELECT b FROM BankPO b"),
+  @NamedQuery(name = "BankPO.findAllWithout", query = "SELECT b FROM BankPO b WHERE b.code NOT IN(:code)"),
   @NamedQuery(name = "BankPO.findByName", query = "SELECT b FROM BankPO b WHERE b.name = :name"),
   @NamedQuery(name = "BankPO.findByCodeAndName", query = "SELECT b FROM BankPO b WHERE b.code = :code AND b.name = :name")})
-public class BankPO implements Serializable {
+public class BankPO extends CommonPO {
 
   private static final long serialVersionUID = 1L;
   

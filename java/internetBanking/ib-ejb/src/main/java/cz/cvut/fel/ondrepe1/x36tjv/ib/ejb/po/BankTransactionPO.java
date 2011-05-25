@@ -1,6 +1,5 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
@@ -16,12 +15,14 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.eclipse.persistence.annotations.Cache;
 
 /**
  *
  * @author ondrepe
  */
 @Entity
+@Cache(alwaysRefresh=true)
 @Table(name = "banktransaction")
 @NamedQueries({
   @NamedQuery(name = "BankTransactionPO.findAll", query = "SELECT b FROM BankTransactionPO b"),
@@ -33,7 +34,7 @@ import javax.persistence.TemporalType;
   @NamedQuery(name = "BankTransactionPO.findByAmountTo", query = "SELECT b FROM BankTransactionPO b WHERE b.amountTo = :amountTo"),
   @NamedQuery(name = "BankTransactionPO.findByDescription", query = "SELECT b FROM BankTransactionPO b WHERE b.description = :description"),
   @NamedQuery(name = "BankTransactionPO.findByCreationTime", query = "SELECT b FROM BankTransactionPO b WHERE b.creationTime = :creationTime")})
-public class BankTransactionPO implements Serializable {
+public class BankTransactionPO extends CommonPO {
   
   private static final long serialVersionUID = 1L;
   

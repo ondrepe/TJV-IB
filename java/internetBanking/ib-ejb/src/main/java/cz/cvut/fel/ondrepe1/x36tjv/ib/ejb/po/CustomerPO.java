@@ -34,7 +34,7 @@ import org.eclipse.persistence.annotations.OptimisticLockingType;
   @NamedQuery(name = "CustomerPO.findAll", query = "SELECT c FROM CustomerPO c"),
   @NamedQuery(name = "CustomerPO.findByValid", query = "SELECT c FROM CustomerPO c WHERE c.valid = :valid"),
   @NamedQuery(name = "CustomerPO.findByAll", query = "SELECT c FROM CustomerPO c WHERE c.firstName = :firstName AND c.lastName = :lastName AND c.email = :email")})
-public class CustomerPO implements Serializable {
+public class CustomerPO extends CommonPO {
     
   private static final long serialVersionUID = 1L;
   

@@ -1,13 +1,12 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListByIdCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListByIdCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.SetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transaction.TransactionListByIdCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transaction.TransactionListCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.transaction.TransactionTransferMoneyCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ITransactionBean;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Transaction;
 import java.util.List;
 import javax.annotation.Resource;
@@ -40,23 +39,23 @@ public class TransactionBean implements ITransactionBean {
   @Override
   @RolesAllowed({"MANAGER"})
   public List<Transaction> getList() {
-    CommonListCommand command = new TransactionListCommand(em);
-    return command.list();
+    ListCommand command = new TransactionListCommand(em, ctx);
+    return command.execute();
   }
 
   @Override
   @RolesAllowed({"MANAGER", "CUSTOMER"})
   public List<Transaction> getListByAccountId(int i) {
-    CommonListByIdCommand command = new TransactionListByIdCommand(em, ctx);
-    return command.listById(i);
+    ListByIdCommand command = new TransactionListByIdCommand(em, ctx);
+    return command.execute(i);
   }
 
   @Override
   @RolesAllowed({"CUSTOMER"})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void transferMoney(Transaction trnsfr) throws CommonIBException {
-    CommonSetCommand<Transaction> command = new TransactionTransferMoneyCommand(em);
-    command.set(trnsfr);
+  public void transferMoney(Transaction trnsfr) {
+    SetCommand<Transaction> command = new TransactionTransferMoneyCommand(em, ctx);
+    command.execute(trnsfr);
   }
   
 }

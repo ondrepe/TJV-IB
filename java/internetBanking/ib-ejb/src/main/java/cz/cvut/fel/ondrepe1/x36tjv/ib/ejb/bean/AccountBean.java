@@ -1,13 +1,12 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListByIdCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListByIdCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.SetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.account.AccountListByIdCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.account.AccountListCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.account.AccountSetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAccountBean;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
 import java.util.List;
 import javax.annotation.Resource;
@@ -40,22 +39,22 @@ public class AccountBean implements IAccountBean {
   @Override
   @RolesAllowed({"MANAGER", "CUSTOMER"})
   public List<Account> getList() {
-    CommonListCommand command = new AccountListCommand(em, ctx);
-    return command.list();
+    ListCommand command = new AccountListCommand(em, ctx);
+    return command.execute();
   }
 
   @Override
   @RolesAllowed({"MANAGER"})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void add(Account acc) throws CommonIBException {
-    CommonSetCommand command = new AccountSetCommand(em);
-    command.set(acc);
+  public void add(Account acc) {
+    SetCommand command = new AccountSetCommand(em, ctx);
+    command.execute(acc);
   }
 
   @Override
   @RolesAllowed({"MANAGER"})
   public List<Account> getListByCustomerId(int customerId) {
-    CommonListByIdCommand command = new AccountListByIdCommand(em);
-    return command.listById(customerId);
+    ListByIdCommand command = new AccountListByIdCommand(em, ctx);
+    return command.execute(customerId);
   }
 }

@@ -3,11 +3,10 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.account;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAccountBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICurrencyRateBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICustomerBean;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CurrencyRate;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Customer;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.ABean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.CommonAddBean;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -19,7 +18,7 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class AccountA extends ABean<Account> {
+public class AccountA extends CommonAddBean<Account> {
 
   @EJB
   private IAccountBean accountBean;
@@ -29,7 +28,7 @@ public class AccountA extends ABean<Account> {
   private ICurrencyRateBean currencyRateBean;
   
   @Override
-  protected void addItem(Account item) throws CommonIBException {
+  protected void addItem(Account item) {
     accountBean.add(item);
   }
 
@@ -43,7 +42,7 @@ public class AccountA extends ABean<Account> {
   }
   
   public List<CurrencyRate> getCurrency() {
-    return currencyRateBean.getAll();
+    return currencyRateBean.getList();
   }
   
 }

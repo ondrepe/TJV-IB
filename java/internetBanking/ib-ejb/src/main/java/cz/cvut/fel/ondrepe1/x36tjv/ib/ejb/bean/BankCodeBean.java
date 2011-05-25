@@ -1,14 +1,19 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.DeleteCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.SetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.bank.BankDeleteCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.bank.BankListCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.bank.BankListWithoutMyBankCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.bank.BankSetCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IBankCodeBean;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.BankCode;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -16,7 +21,6 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -29,28 +33,38 @@ public class BankCodeBean implements IBankCodeBean {
 
   @PersistenceContext
   private EntityManager em;
+  
+  @Resource
+  private SessionContext ctx;
 
   @Override
   @RolesAllowed({"MANAGER", "CUSTOMER"})
-  public List<BankCode> getAll() {
-    Query query = em.createNamedQuery("BankPO.findAll");
-    return query.getResultList();
+  public List<BankCode> getList() {
+    ListCommand command = new BankListCommand(em, ctx);
+    return command.execute();
+  }
+  
+  @Override
+  @RolesAllowed({"MANAGER"})
+  public List<BankCode> getListWithoutMyBank() {
+    ListCommand command = new BankListWithoutMyBankCommand(em, ctx);
+    return command.execute();
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
   @RolesAllowed({"MANAGER"})
-  public void delete(int i) throws CommonIBException {
-    BankPO bank = em.find(BankPO.class, i);
-    em.remove(bank);
+  public void delete(int i) {
+    DeleteCommand command = new BankDeleteCommand(em, ctx);
+    command.execute(i);
   }
 
   @Override
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
   @RolesAllowed({"MANAGER"})
-  public void set(BankCode bc) throws CommonIBException {
-    CommonSetCommand command = new BankSetCommand(em);
-    command.set(bc);
+  public void set(BankCode bc) {
+    SetCommand command = new BankSetCommand(em, ctx);
+    command.execute(bc);
   }
   
 }

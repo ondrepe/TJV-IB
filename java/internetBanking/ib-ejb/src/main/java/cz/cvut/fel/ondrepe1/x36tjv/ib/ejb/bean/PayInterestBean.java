@@ -1,7 +1,6 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.payment.PayInterestCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.TransactionAttribute;
@@ -24,7 +23,7 @@ public class PayInterestBean {
   
   @Schedule
   @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-  public void payInterest() throws CommonIBException {
+  public void payInterest() {
     System.err.println("PayInterest");
     PayInterestCommand command = new PayInterestCommand(em);
     command.payInterest();

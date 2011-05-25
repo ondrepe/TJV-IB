@@ -1,7 +1,6 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.account;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.customer.CustomerGetLoggedCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
@@ -15,17 +14,16 @@ import javax.persistence.Query;
  *
  * @author ondrepe
  */
-public class AccountListCommand extends CommonListCommand<Account, AccountPO> {
+public class AccountListCommand extends ListCommand<AccountPO, Account> {
 
   public AccountListCommand(EntityManager em, SessionContext ctx) {
     super(em, ctx);
   }
 
   @Override
-  protected List<AccountPO> execute() {
+  protected List<AccountPO> list() {
     List<AccountPO> list;
-    CustomerGetLoggedCommand command = new CustomerGetLoggedCommand(em, ctx);
-    CustomerPO custPo = command.getLoggedCustomerPO();
+    CustomerPO custPo = getCustomer();
 
     if(custPo != null) {
       list = custPo.getAccounts();
@@ -49,6 +47,11 @@ public class AccountListCommand extends CommonListCommand<Account, AccountPO> {
       list.add(acc);
     }
     return list;
+  }
+
+  @Override
+  protected boolean authorize() {
+    return isCustomer() || isManager();
   }
   
 }

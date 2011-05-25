@@ -4,7 +4,6 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrencyPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.ws.client.ExchangeOfficeClient;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -20,7 +19,7 @@ public class GetAmountCommand extends CommonCommand {
     super(em);
   }
   
-  public BigDecimal getAmount(AccountPO acc, CurrencyPO curr, BigDecimal amount, TransferEnum direction) throws CommonIBException {
+  public BigDecimal getAmount(AccountPO acc, CurrencyPO curr, BigDecimal amount, TransferEnum direction) {
     boolean isInput = TransferEnum.INPUT.equals(direction);
     BigDecimal amountResult = BigDecimal.ZERO;
     CurrencyPO accCur = acc.getCurrency();
@@ -37,5 +36,10 @@ public class GetAmountCommand extends CommonCommand {
       amountResult = amountResult.subtract(amountInAccCurr, mCtx);
     }
     return amountResult.setScale(4, RoundingMode.HALF_UP);
+  }
+
+  @Override
+  protected boolean authorize() {
+    return true;
   }
 }

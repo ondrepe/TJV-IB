@@ -10,7 +10,6 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankTransactionPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrencyPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrencyRatePO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrentCurrencyRatePO;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -33,7 +32,7 @@ public class PayInterestCommand extends CommonCommand {
     currencyRates = new HashMap<String, BigDecimal>();
   }
 
-  public void payInterest() throws CommonIBException {
+  public void payInterest() {
     GlobalParamCommand gp = new GlobalParamCommand(em);
     int myBankCode = gp.getNumberParam("MYBANKCODE");
     BankPO myBank = em.find(BankPO.class, myBankCode);
@@ -100,5 +99,10 @@ public class PayInterestCommand extends CommonCommand {
       cRatePo.setRate(ccRatePo.getRate());
       em.persist(cRatePo);
     }
+  }
+
+  @Override
+  protected boolean authorize() {
+    return true;
   }
 }

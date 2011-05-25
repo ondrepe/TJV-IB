@@ -9,22 +9,22 @@
 
     <h:form>
       <h:panelGrid columns="3">
-        First name: <h:inputText id="firstName" value="#{customerAD.item.firstName}" validator="#{customer$FirstNameValidator.validate}" />
+        First name: <h:inputText id="firstName" value="#{customerADBean.item.firstName}" validator="#{customerFirstNameValidator.validate}" />
         <h:message for="firstName" />
-        Last name: <h:inputText id="lastName" value="#{customerAD.item.lastName}" validator="#{customer$LastNameValidator.validate}" />
+        Last name: <h:inputText id="lastName" value="#{customerADBean.item.lastName}" validator="#{customerLastNameValidator.validate}" />
         <h:message for="lastName" />
-        Email: <h:inputText id="email" value="#{customerAD.item.email}" validator="#{customer$EmailValidator.validate}" />
+        Email: <h:inputText id="email" value="#{customerADBean.item.email}" validator="#{customerEmailValidator.validate}" />
         <h:message for="email" />
-        <h:commandButton value="Add" action="#{customerAD.add}" />
+        <h:commandButton value="Add" action="#{customerADBean.add}" />
       </h:panelGrid>
     </h:form>
 
-    <h:form>
+    <h:form rendered="#{customerADBean.renderDelete}">
       <h:panelGrid columns="2">
-        <h:selectOneMenu value="#{customerAD.selectedItem}">
-          <f:selectItems itemLabel="#{customer.firstName} #{customer.lastName} (#{customer.email})" itemValue="#{customer.id}" var="customer" value="#{customerAD.list}" />
+        <h:selectOneMenu value="#{customerADBean.selectedItem}">
+          <f:selectItems itemLabel="#{customer.firstName} #{customer.lastName} (#{customer.email})" itemValue="#{customer.id}" var="customer" value="#{customerADBean.list}" />
         </h:selectOneMenu>
-        <h:commandButton value="Delete" action="#{customerAD.delete}" />
+        <h:commandButton value="Delete" action="#{customerADBean.delete}" />
       </h:panelGrid>
     </h:form>
   </ui:define>

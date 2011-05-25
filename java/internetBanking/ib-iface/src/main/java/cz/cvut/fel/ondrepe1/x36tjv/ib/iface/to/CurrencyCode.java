@@ -4,7 +4,7 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to;
  *
  * @author ondrepe
  */
-public class CurrencyCode extends AbstractIFaceObject {
+public class CurrencyCode extends CommonTO {
 
   private String code;
   private String name;

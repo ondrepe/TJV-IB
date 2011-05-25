@@ -1,41 +1,43 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.account;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonListByIdCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListByIdCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.translator.impl.AccountTranslator;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
-import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author ondrepe
  */
-public class AccountListByIdCommand extends CommonListByIdCommand<Account, AccountPO> {
+public class AccountListByIdCommand extends ListByIdCommand<AccountPO, Account> {
 
-  public AccountListByIdCommand(EntityManager em) {
-    super(em);
+  public AccountListByIdCommand(EntityManager em, SessionContext ctx) {
+    super(em, ctx);
   }
 
   @Override
-  protected List<AccountPO> execute(int id) {
-    CustomerPO cPo = em.find(CustomerPO.class, id);
+  protected List<AccountPO> list(int id) {
+    CustomerPO cPo;
+    if (isManager()) {
+      cPo = em.find(CustomerPO.class, id);
+    } else {
+      cPo = getCustomer();
+    }
     return cPo.getAccounts();
   }
 
   @Override
-  protected ArrayList<Account> convert(List<AccountPO> listPo) {
-    ArrayList<Account> list = new ArrayList<Account>();
-    for(AccountPO accPO : listPo) {
-      Account acc = new Account();
-      acc.setId(accPO.getId());
-      acc.setCurrencyCode(accPO.getCurrency().getCode());
-      acc.setAccountNumber(accPO.getAccountNumber());
-      acc.setBalance(accPO.getBalance());
-      list.add(acc);
-    }
-    return list;
+  protected List<Account> convert(List<AccountPO> listPo) {
+    AccountTranslator translator = new AccountTranslator();
+    return translator.translateList(listPo);
   }
-  
+
+  @Override
+  protected boolean authorize() {
+    return isManager() || isCustomer();
+  }
 }

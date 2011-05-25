@@ -1,6 +1,5 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,19 +10,21 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.eclipse.persistence.annotations.Cache;
 
 /**
  *
  * @author ondrepe
  */
 @Entity
+@Cache(alwaysRefresh=true)
 @Table(name = "currencyrate")
 @NamedQueries({
   @NamedQuery(name = "CurrencyRatePO.findAll", query = "SELECT c FROM CurrencyRatePO c"),
   @NamedQuery(name = "CurrencyRatePO.findByCodeAndRate", query = "SELECT c FROM CurrencyRatePO c WHERE c.code = :code AND c.rate = :rate"),
   @NamedQuery(name = "CurrencyRatePO.findByCode", query = "SELECT c FROM CurrencyRatePO c WHERE c.code = :code"),
   @NamedQuery(name = "CurrencyRatePO.findByRate", query = "SELECT c FROM CurrencyRatePO c WHERE c.rate = :rate")})
-public class CurrencyRatePO implements Serializable {
+public class CurrencyRatePO extends CommonPO {
   
   private static final long serialVersionUID = 1L;
   

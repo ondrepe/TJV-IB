@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author ondrepe
  */
-public class Statement extends AbstractIFaceObject {
+public class Statement extends CommonTO {
   
   private Account account;
   private Customer customer;

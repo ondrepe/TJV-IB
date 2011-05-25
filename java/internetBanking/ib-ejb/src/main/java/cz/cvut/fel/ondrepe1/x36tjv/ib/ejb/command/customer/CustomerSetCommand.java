@@ -1,12 +1,13 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.customer;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.SetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AutentizationGroupPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AutentizationPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.EntityExistIBException;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBException;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBExceptionCode;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Customer;
+import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -15,14 +16,14 @@ import javax.persistence.Query;
  *
  * @author ondrepe
  */
-public class CustomerSetCommand extends CommonSetCommand<Customer> {
+public class CustomerSetCommand extends SetCommand<Customer> {
 
-  public CustomerSetCommand(EntityManager em) {
-    super(em);
+  public CustomerSetCommand(EntityManager em, SessionContext ctx) {
+    super(em, ctx);
   }
 
   @Override
-  protected void validate(Customer cstmr) throws CommonIBException {
+  protected void validate(Customer cstmr) {
     cstmr.setFirstName(cstmr.getFirstName().trim());
     cstmr.setLastName(cstmr.getLastName().trim());
     cstmr.setEmail(cstmr.getEmail().trim());
@@ -35,13 +36,13 @@ public class CustomerSetCommand extends CommonSetCommand<Customer> {
     try {
       CustomerPO cRate = (CustomerPO) query.getSingleResult();
       if (cRate != null) {
-        throw new EntityExistIBException("Customer");
+        throw new IBException("Customer exist", IBExceptionCode.VALIDATION_FAILED);
       }
     } catch (PersistenceException ex) {}
   }
 
   @Override
-  protected void execute(Customer cstmr) {
+  protected void set(Customer cstmr) {
     CustomerPO cust;
     if (cstmr.getId() == null) {
       AutentizationGroupPO agPo = em.find(AutentizationGroupPO.class, "CUSTOMER");
@@ -68,5 +69,10 @@ public class CustomerSetCommand extends CommonSetCommand<Customer> {
     builder.append(cstmr.getLastName().substring(0, 5).toLowerCase());
     builder.append(cstmr.getFirstName().substring(0, 3).toLowerCase());
     return builder.toString();
-  } 
+  }
+
+  @Override
+  protected boolean authorize() {
+    return isManager();
+  }
 }

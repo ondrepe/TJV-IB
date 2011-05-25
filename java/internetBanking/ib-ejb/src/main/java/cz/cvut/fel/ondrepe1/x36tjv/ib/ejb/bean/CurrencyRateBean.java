@@ -1,15 +1,18 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.bean;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.DeleteStringIdCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.ListCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.SetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.currencyrate.CurrencyRateDeleteCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.currencyrate.CurrencyRateListCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.currencyrate.CurrencyRateSetCommand;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrencyRatePO;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrentCurrencyRatePO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICurrencyRateBean;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CurrencyRate;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,7 +20,6 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -31,29 +33,30 @@ public class CurrencyRateBean implements ICurrencyRateBean {
   @PersistenceContext
   private EntityManager em;
   
+  @Resource
+  private SessionContext ctx;
+  
   @Override
   @RolesAllowed({"MANAGER"})
-  public List<CurrencyRate> getAll() {
-    Query query = em.createNamedQuery("CurrentCurrencyRatePO.findAll");
-    return query.getResultList();
+  public List<CurrencyRate> getList() {
+    ListCommand command = new CurrencyRateListCommand(em, ctx);
+    return command.execute();
   }
 
   @Override
   @RolesAllowed({"MANAGER"})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void delete(String string) throws CommonIBException {
-    CurrentCurrencyRatePO ccRate = em.find(CurrentCurrencyRatePO.class, string);
-    CurrencyRatePO cRate = em.find(CurrencyRatePO.class, string);
-    em.remove(ccRate);
-    em.remove(cRate);
+  public void delete(String string) {
+    DeleteStringIdCommand command = new CurrencyRateDeleteCommand(em, ctx);
+    command.execute(string);
   }
 
   @Override
   @RolesAllowed({"MANAGER"})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void set(CurrencyRate cr) throws CommonIBException {
-    CommonSetCommand command = new CurrencyRateSetCommand(em);
-    command.set(cr);
+  public void set(CurrencyRate cr) {
+    SetCommand command = new CurrencyRateSetCommand(em, ctx);
+    command.execute(cr);
   }
   
 }

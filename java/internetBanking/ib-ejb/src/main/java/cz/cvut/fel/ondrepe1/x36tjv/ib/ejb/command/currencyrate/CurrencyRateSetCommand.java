@@ -1,13 +1,13 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.currencyrate;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonSetCommand;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.SetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrencyRatePO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrentCurrencyRatePO;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.EntityExistIBException;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.ValidationIBException;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBException;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBExceptionCode;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CurrencyRate;
 import java.math.BigDecimal;
+import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -16,22 +16,20 @@ import javax.persistence.Query;
  *
  * @author ondrepe
  */
-public class CurrencyRateSetCommand extends CommonSetCommand<CurrencyRate> {
+public class CurrencyRateSetCommand extends SetCommand<CurrencyRate> {
 
-  public CurrencyRateSetCommand(EntityManager em) {
-    super(em);
+  public CurrencyRateSetCommand(EntityManager em, SessionContext ctx) {
+    super(em, ctx);
   }
 
   @Override
-  protected void validate(CurrencyRate object) throws CommonIBException {
+  protected void validate(CurrencyRate object) {
     //validace objektu
     String code = object.getCode().trim().toUpperCase();
     BigDecimal rate = object.getRate();
 
     if (code.isEmpty() || code.length() > 3) {
-      ValidationIBException ex = new ValidationIBException("Currency rate code must have 3 characters!");
-      ex.setErrorAttribute("code");
-      ex.setErrorValue(object.getCode());
+      throw new IBException("Currency rate code must have 3 characters!", IBExceptionCode.VALIDATION_FAILED);
     }
 
     object.setCode(code);
@@ -43,13 +41,14 @@ public class CurrencyRateSetCommand extends CommonSetCommand<CurrencyRate> {
     try {
       CurrencyRatePO cRate = (CurrencyRatePO) query.getSingleResult();
       if (cRate != null) {
-        throw new EntityExistIBException("CurrencyRate");
+        throw new IBException("CurrencyRate exist", IBExceptionCode.VALIDATION_FAILED);
       }
-    } catch (PersistenceException ex) {}
+    } catch (PersistenceException ex) {
+    }
   }
 
   @Override
-  protected void execute(CurrencyRate cr) {
+  protected void set(CurrencyRate cr) {
     CurrentCurrencyRatePO ccRate = em.find(CurrentCurrencyRatePO.class, cr.getCode());
     CurrencyRatePO cRate;
     String code = cr.getCode().trim().toUpperCase();
@@ -62,5 +61,10 @@ public class CurrencyRateSetCommand extends CommonSetCommand<CurrencyRate> {
       ccRate.setRate(rate);
     }
     em.persist(ccRate);
+  }
+
+  @Override
+  protected boolean authorize() {
+    return isManager();
   }
 }

@@ -6,43 +6,43 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
   <ui:define name="content">
-    <h:dataTable var="currency" value="#{currencyADL.list}">
+    <h:dataTable var="currencyCode" value="#{currencyBean.list}" rendered="#{currencyBean.renderList}">
       <h:column>
-        <f:facet name="header">code</f:facet>
-        #{currency.code}
+        <f:facet name="header">Code</f:facet>
+        #{currencyCode.code}
       </h:column>
       <h:column>
-        <f:facet name="header">name</f:facet>
-        #{currency.name}
+        <f:facet name="header">Name</f:facet>
+        #{currencyCode.name}
       </h:column>
       <h:column>
-        <f:facet name="header">decimal digits</f:facet>
-        #{currency.decimalDigits}
+        <f:facet name="header">Decimal digits</f:facet>
+        #{currencyCode.decimalDigits}
       </h:column>
     </h:dataTable>
 
     <h:form>
       <h:panelGrid columns="3">
-        Code: <h:inputText id="code" value="#{currencyADL.item.code}" validator="#{currencyADL$CodeValidator.validate}" />
+        Code: <h:inputText id="code" value="#{currencyBean.item.code}" validator="#{currencyCodeValidator.validate}" />
         <h:message for="code" />
-        Name: <h:inputText id="name" value="#{currencyADL.item.name}" validator="#{currencyADL$NameValidator.validate}" />
+        Name: <h:inputText id="name" value="#{currencyBean.item.name}" validator="#{currencyNameValidator.validate}" />
         <h:message for="name" />
-        Decimal digits: <h:selectOneMenu id="decDigits" value="#{currencyADL.item.decimalDigits}">
+        Decimal digits: <h:selectOneMenu id="decDigits" value="#{currencyBean.item.decimalDigits}">
           <f:selectItem itemLabel="0" itemValue="0" />
           <f:selectItem itemLabel="1" itemValue="1" />
           <f:selectItem itemLabel="2" itemValue="2" />
         </h:selectOneMenu>
         <h:message for="decDigits" />
-        <h:commandButton value="Update" action="#{currencyADL.add}" />
+        <h:commandButton value="Update" action="#{currencyBean.add}" />
       </h:panelGrid>
     </h:form>
 
-    <h:form>
+    <h:form rendered="#{currencyBean.renderDelete}">
       <h:panelGrid columns="2">
-        <h:selectOneMenu value="#{currencyADL.selectedItem}">
-          <f:selectItems itemLabel="#{currency.name}" itemValue="#{currency.code}" var="currency" value="#{currencyADL.list}" />
+        <h:selectOneMenu value="#{currencyBean.selectedItem}">
+          <f:selectItems itemLabel="#{currencyCode.name}" itemValue="#{currencyCode.code}" var="currencyCode" value="#{currencyBean.list}" />
         </h:selectOneMenu>
-        <h:commandButton value="Delete" action="#{currencyADL.delete}" />
+        <h:commandButton value="Delete" action="#{currencyBean.delete}" />
       </h:panelGrid>
     </h:form>
   </ui:define>

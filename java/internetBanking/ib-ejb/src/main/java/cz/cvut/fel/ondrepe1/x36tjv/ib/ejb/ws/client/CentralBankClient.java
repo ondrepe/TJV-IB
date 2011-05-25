@@ -3,7 +3,8 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.ws.client;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.CommonCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.BankTransactionPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.GlobalParamPO;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBException;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBExceptionCode;
 import cz.cvut.fel.x36tjv.ondrepe1.centralbankws.TransferRequest;
 import cz.cvut.fel.x36tjv.ondrepe1.centralbankws.TransferResponse;
 import java.util.GregorianCalendar;
@@ -32,7 +33,7 @@ public class CentralBankClient extends CommonCommand {
     webServiceTemplate.setUnmarshaller(marshaller);
   }
 
-  public void transfer(BankTransactionPO btPo) throws CommonIBException {
+  public void transfer(BankTransactionPO btPo) {
     try {
       TransferRequest request = new TransferRequest();
       request.setAccountFrom(btPo.getAccountNumberFrom());
@@ -54,15 +55,20 @@ public class CentralBankClient extends CommonCommand {
 
       TransferResponse response = (TransferResponse) webServiceTemplate.marshalSendAndReceive(getEndpoint(), request);
       if (!response.isResult()) {
-        throw new CommonIBException("Central Bank cannot set Transaction!");
+        throw new IBException("Central Bank cannot set Transaction!", IBExceptionCode.WS_FAILED);
       }
     } catch (Exception ex) {
-      throw new CommonIBException("Central Bank error!", ex);
+      throw new IBException("Central Bank error!", IBExceptionCode.WS_FAILED, ex);
     }
   }
 
   private String getEndpoint() {
     GlobalParamPO gpPo = em.find(GlobalParamPO.class, "CB_ENDPOINT");
     return gpPo.getValue();
+  }
+
+  @Override
+  protected boolean authorize() {
+    return isCustomer();
   }
 }

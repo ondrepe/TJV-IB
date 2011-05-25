@@ -1,6 +1,5 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +18,20 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import org.eclipse.persistence.annotations.Cache;
 
 /**
  *
  * @author ondrepe
  */
 @Entity
+@Cache(alwaysRefresh=true)
 @Table(name = "account")
 @NamedQueries({
   @NamedQuery(name = "AccountPO.findByAccNum", query = "SELECT a FROM AccountPO a WHERE a.accountNumber = :accountNumber AND a.valid = :valid"),
   @NamedQuery(name = "AccountPO.getAccNums", query = "SELECT a.accountNumber FROM AccountPO a ORDER BY a.accountNumber DESC"),
   @NamedQuery(name = "AccountPO.findByValid", query = "SELECT a FROM AccountPO a WHERE a.valid = :valid")})
-public class AccountPO implements Serializable {
+public class AccountPO extends CommonPO {
 
   private static final long serialVersionUID = 1L;
   

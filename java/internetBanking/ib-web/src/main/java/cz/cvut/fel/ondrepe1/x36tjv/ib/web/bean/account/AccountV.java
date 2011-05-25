@@ -2,7 +2,7 @@ package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.account;
 
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAccountBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.LBean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.CommonListBean;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class AccountV extends LBean<Account> {
+public class AccountV extends CommonListBean<Account> {
 
   @EJB
   private IAccountBean accountBean;

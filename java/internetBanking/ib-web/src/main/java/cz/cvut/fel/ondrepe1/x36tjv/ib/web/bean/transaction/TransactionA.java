@@ -4,12 +4,11 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IAccountBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.IBankCodeBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ICurrencyCodeBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.ITransactionBean;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.ejb.exception.CommonIBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.BankCode;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CurrencyCode;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Transaction;
-import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.ABean;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.CommonAddBean;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -21,7 +20,7 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class TransactionA extends ABean<Transaction> {
+public class TransactionA extends CommonAddBean<Transaction> {
 
   @EJB
   private ITransactionBean transactionBean;
@@ -33,7 +32,7 @@ public class TransactionA extends ABean<Transaction> {
   private IBankCodeBean bankCodeBean;
   
   @Override
-  protected void addItem(Transaction item) throws CommonIBException {
+  protected void addItem(Transaction item) {
     transactionBean.transferMoney(item);
   }
 
@@ -47,10 +46,10 @@ public class TransactionA extends ABean<Transaction> {
   }
   
   public List<BankCode> getBanks() {
-    return bankCodeBean.getAll();
+    return bankCodeBean.getList();
   }
   
   public List<CurrencyCode> getCurrencies() {
-    return currencyCodeBean.getAll();
+    return currencyCodeBean.getList();
   }
 }
