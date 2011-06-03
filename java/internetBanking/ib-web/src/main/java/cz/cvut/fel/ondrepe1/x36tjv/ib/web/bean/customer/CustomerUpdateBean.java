@@ -5,9 +5,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.ValueChangeEvent;
 
 /**
  *
@@ -15,7 +12,7 @@ import javax.faces.event.ValueChangeEvent;
  */
 @ManagedBean
 @RequestScoped
-public class CustomerUpdateBean extends CustomerADBean implements AjaxBehaviorListener {
+public class CustomerUpdateBean extends CustomerADBean {
   
   private HtmlDataTable htmlDataTable;
   private boolean selected = true;
@@ -27,18 +24,12 @@ public class CustomerUpdateBean extends CustomerADBean implements AjaxBehaviorLi
   public void setHtmlDataTable(HtmlDataTable htmlDataTable) {
     this.htmlDataTable = htmlDataTable;
   }
-  
-  public void setSelected(ValueChangeEvent event) {
-    Object obj = htmlDataTable.getRowData();
-    setItem((Customer) obj);
-  }
 
   public boolean isSelected() {
     return selected;
   }
 
-  @Override
-  public void processAjaxBehavior(AjaxBehaviorEvent abe) throws AbortProcessingException {
+  public void selectForUpdate() throws AbortProcessingException {
     Customer obj = (Customer) htmlDataTable.getRowData();
     setItem(obj);
     selected = false;

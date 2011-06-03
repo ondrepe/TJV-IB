@@ -28,7 +28,7 @@ public abstract class CommonDLBean <T extends CommonTO> extends CommonListBean<T
   public final void delete() {
     try {
      deleteItem();
-     reload();
+     init();
     } catch(IBException ex) {
     
     }

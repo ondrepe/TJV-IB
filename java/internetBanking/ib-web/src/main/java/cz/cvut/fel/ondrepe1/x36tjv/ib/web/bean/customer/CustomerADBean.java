@@ -41,5 +41,4 @@ public class CustomerADBean extends CommonADLBean<Customer> {
     Integer id = Integer.parseInt(getSelectedItem());
     customerBean.delete(id);
   }
-  
 }

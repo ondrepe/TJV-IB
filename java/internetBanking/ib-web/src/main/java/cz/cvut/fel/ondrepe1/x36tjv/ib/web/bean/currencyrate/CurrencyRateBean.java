@@ -22,6 +22,7 @@ public class CurrencyRateBean extends CommonADLBean<CurrencyRate> {
   private ICurrencyRateBean rateBean;
   @EJB
   private ICurrencyCodeBean codeBean;
+  private List<CurrencyCode> currencyList;
   
   @Override
   protected void addItem(CurrencyRate item) {
@@ -37,6 +38,7 @@ public class CurrencyRateBean extends CommonADLBean<CurrencyRate> {
   protected List<CurrencyRate> load() {
     List<CurrencyRate> list = rateBean.getList();
     setRenderDelete(!list.isEmpty());
+    currencyList = codeBean.getList();
     return list;
   }
 
@@ -46,7 +48,7 @@ public class CurrencyRateBean extends CommonADLBean<CurrencyRate> {
   }
   
   public List<CurrencyCode> getCurrencyList() {
-    return codeBean.getList();
+    return currencyList;
   }
   
 }

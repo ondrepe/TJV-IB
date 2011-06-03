@@ -6,12 +6,12 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
   <ui:define name="content">
-    <h:form rendered="#{customerUpdateBean.renderList}">
+    <h:form id="update_customer_table_form" rendered="#{customerUpdateBean.renderList}">
       <h:dataTable var="customer" value="#{customerUpdateBean.list}" binding="#{customerUpdateBean.htmlDataTable}">
         <h:column>
           <f:facet name="header">Select</f:facet>
-          <h:commandLink value="Select">
-            <f:ajax event="click" render="@form" listener="#{customerUpdateBean.processAjaxBehavior}" />
+          <h:commandLink value="Select" action="#{customerUpdateBean.selectForUpdate}">
+            <!-- <f:ajax event="click" render="@all" listener="{customerUpdateBean.selectForUpdate}" /> -->
           </h:commandLink> 
         </h:column>
         <h:column>
@@ -31,15 +31,18 @@
           #{customer.email}
         </h:column>
       </h:dataTable>
+    </h:form>
 
+    <h:form rendered="#{customerUpdateBean.renderList}" id="update_customer_form" >
       <h:panelGrid columns="3">
-        First name: <h:inputText id="firstName" disabled="#{customerUpdateBean.selected}" value="#{customerUpdateBean.item.firstName}"  validator="#{customerFirstNameValidator.validate}" />
+        First name: <h:inputText id="firstName" value="#{customerUpdateBean.item.firstName}"  validator="#{customerFirstNameValidator.validate}" />
         <h:message for="firstName" />
-        Last name: <h:inputText id="lastName" disabled="#{customerUpdateBean.selected}" value="#{customerUpdateBean.item.lastName}" validator="#{customerLastNameValidator.validate}" />
+        Last name: <h:inputText id="lastName" value="#{customerUpdateBean.item.lastName}" validator="#{customerLastNameValidator.validate}" />
         <h:message for="lastName" />
-        Email: <h:inputText id="email" disabled="#{customerUpdateBean.selected}" value="#{customerUpdateBean.item.email}" validator="#{customerEmailValidator.validate}" />
+        Email: <h:inputText id="email" value="#{customerUpdateBean.item.email}" validator="#{customerEmailValidator.validate}" />
         <h:message for="email" />
-        <h:commandButton value="Update" disabled="#{customerUpdateBean.selected}" action="#{customerUpdateBean.add}" />
+        <h:inputHidden id="idCustomer" value="#{customerUpdateBean.item.id}" />
+        <h:commandButton value="Update" action="#{customerUpdateBean.add}" />
       </h:panelGrid>
     </h:form>
 

@@ -16,11 +16,15 @@ public abstract class CommonADLBean<T extends CommonTO> extends CommonDLBean<T> 
   protected abstract T initItem();
   
   @Override
+  protected void customInit() {
+    item = initItem();
+  }
+  
+  @Override
   public final void add() {
     try {
      addItem(item);
-     item = initItem();
-     reload();
+     init();
     } catch(IBException ex) {
     
     }
@@ -31,9 +35,6 @@ public abstract class CommonADLBean<T extends CommonTO> extends CommonDLBean<T> 
   }
 
   public T getItem() {
-    if(item == null) {
-      item = initItem();
-    }
     return item;
   }
   
