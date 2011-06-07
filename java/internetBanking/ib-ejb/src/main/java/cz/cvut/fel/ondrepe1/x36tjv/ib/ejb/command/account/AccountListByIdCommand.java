@@ -40,4 +40,9 @@ public class AccountListByIdCommand extends ListByIdCommand<AccountPO, Account> 
   protected boolean authorize() {
     return isManager() || isCustomer();
   }
+
+  @Override
+  protected boolean autorizeById(int id) {
+    return true;
+  }
 }

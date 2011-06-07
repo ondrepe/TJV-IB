@@ -7,7 +7,7 @@
 
   <ui:define name="content">
 
-    <h:form>
+    <h:form rendered="#{statementSend.renderList}">
       <h:panelGrid columns="2">
         Account: <h:selectOneMenu value="#{statementSend.accountId}">
           <f:selectItems itemLabel="#{account.accountNumber}" itemValue="#{account.id}" var="account" value="#{statementSend.list}" />
@@ -15,6 +15,9 @@
         <h:commandButton value="Send" action="#{statementSend.send}" />
       </h:panelGrid>
     </h:form>
+    
+    <h:outputLabel rendered="#{!statementSend.renderList}">You do not have any acoount</h:outputLabel>
+    
   </ui:define>
 
 </ui:composition>

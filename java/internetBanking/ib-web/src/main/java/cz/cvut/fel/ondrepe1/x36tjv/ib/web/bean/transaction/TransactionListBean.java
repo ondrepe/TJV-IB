@@ -5,6 +5,7 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Transaction;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.CommonListBean;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class TransactionV extends CommonListBean<Transaction> {
+public class TransactionListBean extends CommonListBean<Transaction> {
 
   @EJB
   private ITransactionBean transactionBean;
@@ -32,7 +33,9 @@ public class TransactionV extends CommonListBean<Transaction> {
         Integer accountId = Integer.parseInt(value);
         id = true;
         return transactionBean.getListByAccountId(accountId);
-      } catch(Exception e) {}
+      } catch(EJBException e) {
+        handleEJBException(e);
+      }
     }
     id = false;
     return transactionBean.getList();

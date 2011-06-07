@@ -7,7 +7,7 @@
 
   <ui:define name="content">
    
-    <h:dataTable var="transaction" value="#{transactionV.list}">
+    <h:dataTable var="transaction" value="#{transactionListBean.list}" rendered="#{transactionListBean.renderList}">
       <h:column>
         <f:facet name="header">Id</f:facet>
         #{transaction.id}
@@ -38,6 +38,8 @@
       </h:column>
     </h:dataTable>
 
+    <h:outputLabel rendered="#{!transactionListBean.renderList}">No data found</h:outputLabel>
+    
   </ui:define>
 
 </ui:composition>

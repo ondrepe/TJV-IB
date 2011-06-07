@@ -7,21 +7,23 @@
 
   <ui:define name="content">
     
-    <h:form>
+    <h:form rendered="#{accountAddBean.renderCustomers}">
       <h:panelGrid columns="3">
-        Customer: <h:selectOneMenu id="customerId" value="#{accountA.item.customerId}">
-          <f:selectItems itemLabel="#{customer.firstName} #{customer.lastName} (#{customer.email})" itemValue="#{customer.id}" var="customer" value="#{accountA.customers}" />
+        Customer: <h:selectOneMenu id="customerId" value="#{accountAddBean.item.customerId}">
+          <f:selectItems itemLabel="#{customer.firstName} #{customer.lastName} (#{customer.email})" itemValue="#{customer.id}" var="customer" value="#{accountAddBean.customers}" />
         </h:selectOneMenu>
         <h:message for="customerId" />
-        Currency <h:selectOneMenu id="currency" value="#{accountA.item.currencyCode}">
-          <f:selectItems itemLabel="#{currency.code}" itemValue="#{currency.code}" var="currency" value="#{accountA.currency}" />
+        Currency <h:selectOneMenu id="currency" value="#{accountAddBean.item.currencyCode}">
+          <f:selectItems itemLabel="#{currency.code}" itemValue="#{currency.code}" var="currency" value="#{accountAddBean.currency}" />
         </h:selectOneMenu>
         <h:message for="currency" />
-        Initial balance: <h:inputText id="balance" value="#{accountA.item.balance}" validator="#{accountA$BalanceValidator.validate}" />
+        Initial balance: <h:inputText id="balance" value="#{accountAddBean.item.balance}" validator="#{accountBalanceValidator.validate}" />
         <h:message for="balance" />
-        <h:commandButton value="Add" action="#{accountA.add}" />
+        <h:commandButton value="Add" action="#{accountAddBean.add}" />
       </h:panelGrid>
     </h:form>
+    
+    <h:outputLabel rendered="#{!accountAddBean.renderCustomers}">No data found</h:outputLabel>
 
   </ui:define>
 

@@ -6,7 +6,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
   <ui:define name="content">
-    <h:dataTable var="account" value="#{accountV.list}">
+    <h:dataTable var="account" value="#{accountListBean.list}" rendered="#{accountListBean.renderList}">
       <h:column>
         <f:facet name="header">Id</f:facet>
         #{account.id}
@@ -32,6 +32,8 @@
       </h:column>
     </h:dataTable>
 
+    <h:outputLabel rendered="#{!accountListBean.renderList}">No data found</h:outputLabel>
+    
   </ui:define>
 
 </ui:composition>

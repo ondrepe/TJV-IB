@@ -24,7 +24,7 @@ public abstract class ListByIdCommand<PO extends CommonPO, TO extends CommonTO> 
 
   public List<TO> execute(int id) {
     List<TO> convertedList = null;
-    if(authorize()) {
+    if(authorize() && autorizeById(id)) {
       List<PO> list = list(id);
       convertedList = convert(list);
     } else {
@@ -35,5 +35,6 @@ public abstract class ListByIdCommand<PO extends CommonPO, TO extends CommonTO> 
   
   protected abstract List<PO> list(int id);
   protected abstract List<TO> convert(List<PO> list);
+  protected abstract boolean autorizeById(int id);
   
 }

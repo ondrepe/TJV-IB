@@ -4,7 +4,11 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.command.SetCommand;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.AccountPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CurrencyPO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.ejb.po.CustomerPO;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBException;
+import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBExceptionCode;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
@@ -22,6 +26,18 @@ public class AccountSetCommand extends SetCommand<Account> {
 
   @Override
   protected void validate(Account object) {
+    BigDecimal balance = object.getBalance();
+    String currencyCode = object.getCurrencyCode();
+    CurrencyPO currency = em.find(CurrencyPO.class, currencyCode);
+    if(currency == null) {
+      throw new IBException("Curency does not exist!", IBExceptionCode.VALIDATION_FAILED);
+    }
+    int dd = currency.getDecimalDigits();
+    BigDecimal roundedBalance = balance.setScale(dd, RoundingMode.HALF_UP);
+    int compare = roundedBalance.compareTo(BigDecimal.ZERO); 
+    if(compare <= 0) {
+      throw new IBException("Amount is less or equal zero!", IBExceptionCode.VALIDATION_FAILED);
+    }
   }
 
   protected String createAccountNumber() {

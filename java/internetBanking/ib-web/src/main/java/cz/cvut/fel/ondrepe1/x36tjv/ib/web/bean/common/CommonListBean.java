@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
  *
  * @author ondrepe
  */
-public abstract class CommonListBean<T extends CommonTO> implements IListBean<T> {
+public abstract class CommonListBean<T extends CommonTO> extends CommonBean implements IListBean<T> {
 
   private List<T> list;
   private boolean renderList;

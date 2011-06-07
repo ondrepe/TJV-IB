@@ -5,6 +5,7 @@ import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.Account;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.CommonListBean;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @RequestScoped
-public class AccountV extends CommonListBean<Account> {
+public class AccountListBean extends CommonListBean<Account> {
 
   @EJB
   private IAccountBean accountBean;
@@ -29,7 +30,9 @@ public class AccountV extends CommonListBean<Account> {
       try {
         Integer customerId = Integer.parseInt(value);
         return accountBean.getListByCustomerId(customerId);
-      } catch(Exception e) {}
+      } catch(EJBException e) {
+        handleEJBException(e);
+      }
     }
     return accountBean.getList();
   }

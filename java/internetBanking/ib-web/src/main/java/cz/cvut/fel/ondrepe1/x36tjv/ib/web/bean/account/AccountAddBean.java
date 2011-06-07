@@ -18,7 +18,7 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class AccountA extends CommonAddBean<Account> {
+public class AccountAddBean extends CommonAddBean<Account> {
 
   @EJB
   private IAccountBean accountBean;
@@ -26,6 +26,9 @@ public class AccountA extends CommonAddBean<Account> {
   private ICustomerBean customerBean;
   @EJB
   private ICurrencyRateBean currencyRateBean;
+  private List<Customer> customers;
+  private List<CurrencyRate> currency;
+  private boolean renderCustomers;
   
   @Override
   protected void addItem(Account item) {
@@ -33,16 +36,31 @@ public class AccountA extends CommonAddBean<Account> {
   }
 
   @Override
+  protected void customInit() {
+    customers = customerBean.getList();
+    currency = currencyRateBean.getList();
+    if(customers != null && !customers.isEmpty() && currency != null && !currency.isEmpty()) {
+      renderCustomers = true;
+    } else {
+      renderCustomers = false;
+    }
+  }
+  
+  @Override
   protected Account initItem() {
     return new Account();
   }
   
   public List<Customer> getCustomers() {
-    return customerBean.getList();
+    return customers;
   }
   
   public List<CurrencyRate> getCurrency() {
-    return currencyRateBean.getList();
+    return currency;
+  }
+
+  public boolean isRenderCustomers() {
+    return renderCustomers;
   }
   
 }

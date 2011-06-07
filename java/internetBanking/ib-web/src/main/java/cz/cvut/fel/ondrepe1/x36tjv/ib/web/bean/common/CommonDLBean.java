@@ -1,9 +1,9 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CommonTO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface.IListBean;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface.IDeleteBean;
+import javax.ejb.EJBException;
 
 /**
  *
@@ -29,8 +29,8 @@ public abstract class CommonDLBean <T extends CommonTO> extends CommonListBean<T
     try {
      deleteItem();
      init();
-    } catch(IBException ex) {
-    
+    } catch(EJBException ex) {
+      handleEJBException(ex);
     }
   }
 

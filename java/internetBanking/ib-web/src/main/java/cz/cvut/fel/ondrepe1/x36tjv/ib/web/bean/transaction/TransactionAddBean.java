@@ -20,7 +20,7 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class TransactionA extends CommonAddBean<Transaction> {
+public class TransactionAddBean extends CommonAddBean<Transaction> {
 
   @EJB
   private ITransactionBean transactionBean;
@@ -30,7 +30,23 @@ public class TransactionA extends CommonAddBean<Transaction> {
   private ICurrencyCodeBean currencyCodeBean;
   @EJB
   private IBankCodeBean bankCodeBean;
-  
+  private List<Account> accounts;
+  private List<BankCode> banks;
+  private List<CurrencyCode> currencies;
+  private boolean renderSend;
+
+  @Override
+  protected void customInit() {
+    accounts = accountBean.getList();
+    if (accounts != null && !accounts.isEmpty()) {
+      banks = bankCodeBean.getList();
+      currencies = currencyCodeBean.getList();
+      renderSend = true;
+    } else {
+      renderSend = false;
+    }
+  }
+
   @Override
   protected void addItem(Transaction item) {
     transactionBean.transferMoney(item);
@@ -40,16 +56,20 @@ public class TransactionA extends CommonAddBean<Transaction> {
   protected Transaction initItem() {
     return new Transaction();
   }
-  
+
   public List<Account> getAccounts() {
-    return accountBean.getList();
+    return accounts;
   }
-  
+
   public List<BankCode> getBanks() {
-    return bankCodeBean.getList();
+    return banks;
   }
-  
+
   public List<CurrencyCode> getCurrencies() {
-    return currencyCodeBean.getList();
+    return currencies;
+  }
+
+  public boolean isRenderSend() {
+    return renderSend;
   }
 }

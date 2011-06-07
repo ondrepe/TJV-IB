@@ -15,10 +15,10 @@ import javax.faces.validator.ValidatorException;
  */
 @ManagedBean
 @RequestScoped
-public class CurrencyRateRateValidator implements Validator {
+public class AccountBalanceValidator implements Validator {
 
-  private static final String MANDATORY = "Rate is mandatory!";
-  private static final String BAD_VALUE = "The rate must be nonnegative with a maximum of two digits after the decimal point!";
+  private static final String MANDATORY = "Balance is mandatory!";
+  private static final String BAD_VALUE = "The balance must be positive number!";
 
   
   @Override
@@ -27,11 +27,10 @@ public class CurrencyRateRateValidator implements Validator {
       throw new ValidatorException(new FacesMessage(MANDATORY));
     }
     BigDecimal bigDecValue = (BigDecimal) value;
-    int compareZero = bigDecValue.compareTo(BigDecimal.ZERO);
-    int compareMax = bigDecValue.compareTo(new BigDecimal("99.99"));
-    
-    if (compareZero <= 0 || compareMax > 0 || !(bigDecValue.toString()).matches("(\\d{0,2}|\\d{0,2}[\\.,\\,]\\d{0,2})")) {
+    int compare = bigDecValue.compareTo(BigDecimal.ZERO);
+    if (compare <= 0) {
       throw new ValidatorException(new FacesMessage(BAD_VALUE));
     }
   }
+  
 }

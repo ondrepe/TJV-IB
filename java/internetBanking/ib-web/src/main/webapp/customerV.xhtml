@@ -32,7 +32,9 @@
         </h:link>
       </h:column>
     </h:dataTable>
-
+    
+    <h:outputLabel rendered="#{!customerListBean.renderList}">No data found</h:outputLabel>
+    
   </ui:define>
 
 </ui:composition>

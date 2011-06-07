@@ -7,30 +7,32 @@
 
   <ui:define name="content">
     
-    <h:form>
+    <h:form rendered="#{transactionAddBean.renderSend}">
       <h:panelGrid columns="3">
-        Account From: <h:selectOneMenu id="customerId" value="#{transactionA.item.accountFrom}">
-          <f:selectItems itemLabel="#{account.accountNumber}" itemValue="#{account.accountNumber}" var="account" value="#{transactionA.accounts}" />
+        Account From: <h:selectOneMenu id="customerId" value="#{transactionAddBean.item.accountFrom}">
+          <f:selectItems itemLabel="#{account.accountNumber}" itemValue="#{account.accountNumber}" var="account" value="#{transactionAddBean.accounts}" />
         </h:selectOneMenu>
         <h:message for="customerId" />
-        Bank To: <h:selectOneMenu id="bank" value="#{transactionA.item.bankTo}">
-          <f:selectItems itemLabel="#{bank.name}" itemValue="#{bank.code}" var="bank" value="#{transactionA.banks}" />
+        Bank To: <h:selectOneMenu id="bank" value="#{transactionAddBean.item.bankTo}">
+          <f:selectItems itemLabel="#{bank.name}" itemValue="#{bank.code}" var="bank" value="#{transactionAddBean.banks}" />
         </h:selectOneMenu>
         <h:message for="bank" />
-        Account To: <h:inputText id="accountTo" value="#{transactionA.item.accountTo}" />
+        Account To: <h:inputText id="accountTo" value="#{transactionAddBean.item.accountTo}" />
         <h:message for="accountTo" />
-        Amount: <h:inputText id="amount" value="#{transactionA.item.ammountTo}" validator="#{accountA$BalanceValidator.validate}" />
+        Amount: <h:inputText id="amount" value="#{transactionAddBean.item.ammountTo}" validator="#{accountBalanceValidator.validate}" />
         <h:message for="amount" />
-        Currency: <h:selectOneMenu id="currency" value="#{transactionA.item.currencyCodeTo}">
-          <f:selectItems itemLabel="#{currency.code}" itemValue="#{currency.code}" var="currency" value="#{transactionA.currencies}" />
+        Currency: <h:selectOneMenu id="currency" value="#{transactionAddBean.item.currencyCodeTo}">
+          <f:selectItems itemLabel="#{currency.code}" itemValue="#{currency.code}" var="currency" value="#{transactionAddBean.currencies}" />
         </h:selectOneMenu>
         <h:message for="currency" />
-        Description: <h:inputText id="desc" value="#{transactionA.item.description}" />
+        Description: <h:inputText id="desc" value="#{transactionAddBean.item.description}" />
         <h:message for="desc" />
-        <h:commandButton value="Transfer" action="#{transactionA.add}" />
+        <h:commandButton value="Transfer" action="#{transactionAddBean.add}" />
       </h:panelGrid>
     </h:form>
 
+    <h:outputLabel rendered="#{!transactionAddBean.renderSend}">You do not have any acoount</h:outputLabel>
+    
   </ui:define>
 
 </ui:composition>

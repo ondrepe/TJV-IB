@@ -66,6 +66,18 @@ public class TransactionListByIdCommand extends ListByIdCommand<BankTransactionP
 
   @Override
   protected boolean authorize() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return isCustomer() || isManager();
+  }
+
+  @Override
+  protected boolean autorizeById(int id) {
+    if(isManager()) {
+      return true;
+    }
+    if(isCustomer()) {
+      AuthorizationAccountCommand command = new AuthorizationAccountCommand(em, ctx);
+      return command.authorize(id);
+    }
+    return false;
   }
 }

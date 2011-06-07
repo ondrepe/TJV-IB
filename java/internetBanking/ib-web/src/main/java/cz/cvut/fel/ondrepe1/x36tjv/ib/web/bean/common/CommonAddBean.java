@@ -1,24 +1,27 @@
 package cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common;
 
-import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.exception.IBException;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.iface.to.CommonTO;
 import cz.cvut.fel.ondrepe1.x36tjv.ib.web.bean.common.iface.IAddBean;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJBException;
 
 /**
  *
  * @author ondrepe
  */
-public abstract class CommonAddBean<T extends CommonTO> implements IAddBean {
+public abstract class CommonAddBean<T extends CommonTO> extends CommonBean implements IAddBean {
   
   private T item;
   
   protected abstract T initItem();
   protected abstract void addItem(T item);
+  protected void customInit() {
+  }
   
   @PostConstruct
   public void init() {
     item = initItem();
+    customInit();
   }
   
   @Override
@@ -26,8 +29,8 @@ public abstract class CommonAddBean<T extends CommonTO> implements IAddBean {
     try {
      addItem(item);
      init();
-    } catch(IBException ex) {
-    
+    } catch(EJBException ex) {
+      handleEJBException(ex);
     }
   }
 
